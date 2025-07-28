@@ -470,7 +470,8 @@
             }
 
             .container {
-                padding: 1.5rem 2rem;
+                max-width: 1400px;
+                padding: 2.5rem 3rem;
             }
 
             .page-title {
@@ -478,27 +479,28 @@
             }
 
             .profile-card {
-                display: flex;
-                max-width: 800px;
+                max-width: 1100px;
+                min-width: 900px;
                 margin: 0 auto 2rem;
+                display: flex;
             }
 
             .profile-header {
-                width: 300px;
+                width: 350px;
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
-                padding: 2rem;
+                padding: 2.5rem;
             }
 
             .profile-body {
                 flex: 1;
-                padding: 2rem;
+                padding: 2.5rem;
             }
 
             .profile-details {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 1.5rem;
+                gap: 2.5rem;
             }
         }
 
@@ -836,7 +838,6 @@
     </script>
 
 
-<!-- 1. MODAL HTML: pega antes de </body> -->
     <div id="logout-modal" style="display:none;">
     <div class="modal-overlay"></div>
     <div class="modal-content">
