@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil | Nelva Bienes Raíces</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1e478a;
+            --primary-light: #6366f1;
+            --secondary-color: #398CA2;
+            --accent-color: #e1f3fd;
+            --text-color: #334155;
+            --text-light: #64748b;
+            --light-gray: #f8fafc;
+            --medium-gray: #e2e8f0;
+            --dark-gray: #94a3b8;
+            --success-color: #10b981;
+            --success-light: #a7f3d0;
+            --warning-color: #f59e0b;
+            --warning-light: #fde68a;
+            --danger-color: #ef4444;
+            --danger-light: #fee2e2;
+            --white: #ffffff;
+            --dark-bg: #1e293b;
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+            --rounded: 12px;
+            --rounded-sm: 8px;
+            --blue-accent: #3b82f6;
+            --transition: all 0.2s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            color: var(--text-color);
+            background-color: var(--light-gray);
+            min-height: 100vh;
+            padding-bottom: 80px;
+            line-height: 1.5;
+        }
+
+        /* Navbar Desktop */
+        .navbar-desktop {
+            display: none;
+            background-color: var(--white);
+            box-shadow: var(--shadow);
+            padding: 0.75rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar-desktop-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo i {
+            font-size: 1.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.25rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-light);
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-links a.active {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--primary-color);
+            border-radius: 3px;
+        }
+
+        /* Navbar Mobile */
+        .navbar-mobile {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background-color: var(--white);
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 0.5rem 0;
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--dark-gray);
+            font-size: 0.7rem;
+            transition: var(--transition);
+            padding: 0.4rem;
+            border-radius: var(--rounded-sm);
+        }
+
+        .nav-item i {
+            font-size: 1.1rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .nav-item.active {
+            color: var(--primary-color);
+            background-color: var(--light-gray);
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.25rem 1rem;
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-color);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .page-title i {
+            color: var(--primary-color);
+            font-size: 1.3rem;
+        }
+
+        /* Profile Card */
+        .profile-card {
+            background-color: var(--white);
+            border-radius: var(--rounded);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: var(--transition);
+            margin-bottom: 1.5rem;
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+
+        .profile-header {
+            background-color: var(--primary-color);
+            padding: 1.5rem;
+            text-align: center;
+            color: var(--white);
+            position: relative;
+        }
+
+        .profile-image-container {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 1rem;
+            position: relative;
+        }
+
+        .profile-image {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--white);
+            background-color: var(--medium-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            font-size: 2.5rem;
+        }
+
+        .edit-image-btn {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background-color: var(--white);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            border: none;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .edit-image-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .profile-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .profile-username {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .profile-body {
+            padding: 1.5rem;
+        }
+
+        .profile-details {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        .detail-group {
+            margin-bottom: 0.5rem;
+        }
+
+        .detail-label {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-bottom: 0.25rem;
+            display: block;
+        }
+
+        .detail-value {
+            font-size: 0.95rem;
+            font-weight: 500;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .detail-value.editable {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .edit-btn {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            transition: var(--transition);
+        }
+
+        .edit-btn:hover {
+            color: var(--secondary-color);
+        }
+
+        .edit-btn i {
+            font-size: 0.8rem;
+        }
+
+        .profile-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 1.5rem;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border-radius: var(--rounded-sm);
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.85rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--accent-color);
+        }
+
+        .btn i {
+            font-size: 0.8rem;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: var(--white);
+            border-radius: var(--rounded);
+            width: 100%;
+            max-width: 450px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+            animation: modalFadeIn 0.3s ease-out;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--medium-gray);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            color: var(--primary-color);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-color);
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--medium-gray);
+            border-radius: var(--rounded-sm);
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(30, 71, 138, 0.1);
+        }
+
+        .modal-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--medium-gray);
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Desktop Styles */
+        @media (min-width: 768px) {
+            .navbar-desktop {
+                display: block;
+            }
+
+            .navbar-mobile {
+                display: none;
+            }
+
+            .container {
+                padding: 1.5rem 2rem;
+            }
+
+            .page-title {
+                font-size: 1.75rem;
+            }
+
+            .profile-card {
+                display: flex;
+                max-width: 800px;
+                margin: 0 auto 2rem;
+            }
+
+            .profile-header {
+                width: 300px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                padding: 2rem;
+            }
+
+            .profile-body {
+                flex: 1;
+                padding: 2rem;
+            }
+
+            .profile-details {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar Desktop -->
+    <nav class="navbar-desktop">
+        <div class="navbar-desktop-container">
+            <div class="logo">
+                <i class="fas fa-home"></i>
+                <span>Nelva Bienes Raíces</span>
+            </div>
+            <div class="nav-links">
+                <a href="#"><i class="fas fa-home"></i> Inicio</a>
+                <a href="#"><i class="fas fa-map-marked-alt"></i> Fraccionamientos</a>
+                <a href="#" class="active"><i class="fas fa-user"></i> Perfil</a>
+                <a href="#"><i class="fas fa-cog"></i> Configuración</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h1 class="page-title">
+            <i class="fas fa-user"></i>
+            <span>Mi Perfil</span>
+        </h1>
+
+        <!-- Profile Card -->
+        <div class="profile-card">
+            <div class="profile-header">
+                <div class="profile-image-container">
+                    <div class="profile-image" id="profileImage">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <input type="file" id="fileInput" class="file-input" accept="image/*">
+                    <button class="edit-image-btn" id="editImageBtn">
+                        <i class="fas fa-camera"></i>
+                    </button>
+                </div>
+                <h2 class="profile-name">Juan Pérez</h2>
+                <p class="profile-username">Agente de Ventas</p>
+            </div>
+            <div class="profile-body">
+                <div class="profile-details">
+                    <div class="detail-group">
+                        <span class="detail-label">Nombre</span>
+                        <div class="detail-value editable">
+                            <span id="firstNameValue">Juan</span>
+                            <button class="edit-btn" data-field="firstName">
+                                <i class="fas fa-pencil-alt"></i> Editar
+                            </button>
+                        </div>
+                    </div>
+                    <div class="detail-group">
+                        <span class="detail-label">Apellidos</span>
+                        <div class="detail-value editable">
+                            <span id="lastNameValue">Pérez García</span>
+                            <button class="edit-btn" data-field="lastName">
+                                <i class="fas fa-pencil-alt"></i> Editar
+                            </button>
+                        </div>
+                    </div>
+                    <div class="detail-group">
+                        <span class="detail-label">Teléfono</span>
+                        <div class="detail-value editable">
+                            <span id="phoneValue">555-123-4567</span>
+                            <button class="edit-btn" data-field="phone">
+                                <i class="fas fa-pencil-alt"></i> Editar
+                            </button>
+                        </div>
+                    </div>
+                    <div class="detail-group">
+                        <span class="detail-label">Correo electrónico</span>
+                        <div class="detail-value editable">
+                            <span id="emailValue">juan.perez@nelva.com</span>
+                            <button class="edit-btn" data-field="email">
+                                <i class="fas fa-pencil-alt"></i> Editar
+                            </button>
+                        </div>
+                    </div>
+                    <div class="detail-group">
+                        <span class="detail-label">Fecha de ingreso</span>
+                        <div class="detail-value">15/03/2022</div>
+                    </div>
+                    <div class="detail-group">
+                        <span class="detail-label">Total ventas</span>
+                        <div class="detail-value">42 lotes</div>
+                    </div>
+                </div>
+                <div class="profile-actions">
+                    <button class="btn btn-outline" id="changePasswordBtn">
+                        <i class="fas fa-key"></i> Cambiar contraseña
+                    </button>
+                    <button class="btn btn-primary" id="saveChangesBtn">
+                        <i class="fas fa-save"></i> Guardar cambios
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Change Password Modal -->
+    <div class="modal" id="passwordModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Cambiar contraseña</h3>
+                <button class="modal-close" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="passwordForm">
+                    <div class="form-group">
+                        <label for="currentPassword" class="form-label">Contraseña actual</label>
+                        <input type="password" id="currentPassword" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="newPassword" class="form-label">Nueva contraseña</label>
+                        <input type="password" id="newPassword" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword" class="form-label">Confirmar nueva contraseña</label>
+                        <input type="password" id="confirmPassword" class="form-control" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="cancelChange">Cancelar</button>
+                <button class="btn btn-primary" id="savePassword">Guardar cambios</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Field Modal -->
+    <div class="modal" id="editFieldModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="editFieldTitle">Editar campo</h3>
+                <button class="modal-close" id="closeEditModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="editFieldForm">
+                    <div class="form-group">
+                        <label for="editFieldValue" class="form-label" id="editFieldLabel">Valor</label>
+                        <input type="text" id="editFieldValue" class="form-control" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="cancelEdit">Cancelar</button>
+                <button class="btn btn-primary" id="saveEdit">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navbar Mobile -->
+    <nav class="navbar-mobile">
+        <a href="#" class="nav-item">
+            <i class="fas fa-home"></i>
+            <span>Inicio</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="fas fa-map-marked-alt"></i>
+            <span>Fraccionamientos</span>
+        </a>
+        <a href="#" class="nav-item active">
+            <i class="fas fa-user"></i>
+            <span>Perfil</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="fas fa-cog"></i>
+            <span>Ajustes</span>
+        </a>
+    </nav>
+
+    <script>
+        // Modal functionality
+        const passwordModal = document.getElementById('passwordModal');
+        const changePasswordBtn = document.getElementById('changePasswordBtn');
+        const closeModal = document.getElementById('closeModal');
+        const cancelChange = document.getElementById('cancelChange');
+        
+        changePasswordBtn.addEventListener('click', () => {
+            passwordModal.classList.add('active');
+        });
+        
+        closeModal.addEventListener('click', () => {
+            passwordModal.classList.remove('active');
+        });
+        
+        cancelChange.addEventListener('click', () => {
+            passwordModal.classList.remove('active');
+        });
+        
+        // Close modal when clicking outside
+        passwordModal.addEventListener('click', (e) => {
+            if (e.target === passwordModal) {
+                passwordModal.classList.remove('active');
+            }
+        });
+        
+        // Form submission (just for demo)
+        document.getElementById('savePassword').addEventListener('click', () => {
+            alert('Contraseña cambiada exitosamente (demo)');
+            passwordModal.classList.remove('active');
+            document.getElementById('passwordForm').reset();
+        });
+
+        // Save all changes button
+        document.getElementById('saveChangesBtn').addEventListener('click', () => {
+            // Here you would typically send the data to the server
+            alert('Cambios guardados exitosamente (demo)');
+        });
+
+        // Edit field modal functionality
+        const editFieldModal = document.getElementById('editFieldModal');
+        const closeEditModal = document.getElementById('closeEditModal');
+        const cancelEdit = document.getElementById('cancelEdit');
+        let currentField = null;
+
+        // Handle edit buttons
+        document.querySelectorAll('.edit-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const field = e.currentTarget.getAttribute('data-field');
+                currentField = field;
+                
+                // Set modal title and label based on field
+                const fieldLabels = {
+                    'firstName': 'Nombre',
+                    'lastName': 'Apellidos',
+                    'phone': 'Teléfono',
+                    'email': 'Correo electrónico',
+                    'username': 'Nombre de usuario'
+                };
+                
+                document.getElementById('editFieldTitle').textContent = `Editar ${fieldLabels[field]}`;
+                document.getElementById('editFieldLabel').textContent = fieldLabels[field];
+                
+                // Get current value
+                const currentValue = document.getElementById(`${field}Value`).textContent;
+                document.getElementById('editFieldValue').value = currentValue;
+                
+                // Show modal
+                editFieldModal.classList.add('active');
+            });
+        });
+
+        // Close edit modal
+        closeEditModal.addEventListener('click', () => {
+            editFieldModal.classList.remove('active');
+        });
+        
+        cancelEdit.addEventListener('click', () => {
+            editFieldModal.classList.remove('active');
+        });
+        
+        // Close modal when clicking outside
+        editFieldModal.addEventListener('click', (e) => {
+            if (e.target === editFieldModal) {
+                editFieldModal.classList.remove('active');
+            }
+        });
+
+        // Save edited field
+        document.getElementById('saveEdit').addEventListener('click', () => {
+            if (currentField) {
+                const newValue = document.getElementById('editFieldValue').value;
+                document.getElementById(`${currentField}Value`).textContent = newValue;
+                editFieldModal.classList.remove('active');
+            }
+        });
+
+        // Image upload functionality
+        const editImageBtn = document.getElementById('editImageBtn');
+        const fileInput = document.getElementById('fileInput');
+        const profileImage = document.getElementById('profileImage');
+
+        editImageBtn.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                if (!file.type.match('image.*')) {
+                    alert('Por favor, selecciona un archivo de imagen válido.');
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    // Remove the icon and set the image as background
+                    profileImage.innerHTML = '';
+                    profileImage.style.backgroundImage = `url(${event.target.result})`;
+                    profileImage.style.backgroundSize = 'cover';
+                    profileImage.style.backgroundPosition = 'center';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Also allow clicking directly on the profile image to change it (better UX on mobile)
+        profileImage.addEventListener('click', () => {
+            fileInput.click();
+        });
+    </script>
+</body>
+</html>

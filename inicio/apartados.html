@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de Apartados | Inmobiliaria</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1e478a;
+            --primary-light: #6366f1;
+            --secondary-color: #398CA2;
+            --accent-color: #e1f3fd;
+            --text-color: #334155;
+            --text-light: #64748b;
+            --light-gray: #f8fafc;
+            --medium-gray: #e2e8f0;
+            --dark-gray: #94a3b8;
+            --success-color: #10b981;
+            --success-light: #a7f3d0;
+            --warning-color: #f59e0b;
+            --warning-light: #fde68a;
+            --danger-color: #ef4444;
+            --danger-light: #fee2e2;
+            --white: #ffffff;
+            --dark-bg: #1e293b;
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+            --rounded: 12px;
+            --rounded-sm: 8px;
+            --blue-accent: #3b82f6;
+            --transition: all 0.2s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            color: var(--text-color);
+            background-color: var(--light-gray);
+            min-height: 100vh;
+            padding-bottom: 80px;
+            line-height: 1.5;
+        }
+
+        /* Navbar Desktop */
+        .navbar-desktop {
+            display: none;
+            background-color: var(--white);
+            box-shadow: var(--shadow);
+            padding: 0.75rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar-desktop-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo i {
+            font-size: 1.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.25rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-light);
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-links a.active {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--primary-color);
+            border-radius: 3px;
+        }
+
+        /* Navbar Mobile */
+        .navbar-mobile {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background-color: var(--white);
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 0.5rem 0;
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--dark-gray);
+            font-size: 0.7rem;
+            transition: var(--transition);
+            padding: 0.4rem;
+            border-radius: var(--rounded-sm);
+        }
+
+        .nav-item i {
+            font-size: 1.1rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .nav-item.active {
+            color: var(--primary-color);
+            background-color: var(--light-gray);
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.25rem 1rem;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+            color: var(--text-color);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .page-title i {
+            color: var(--primary-color);
+            font-size: 1.3rem;
+        }
+
+        .page-actions {
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        /* Stats Cards */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-card {
+            background-color: var(--white);
+            border-radius: var(--rounded);
+            padding: 1.25rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border-top: 4px solid transparent;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .stat-card-title {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-bottom: 0.4rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .stat-card-title i {
+            font-size: 0.9rem;
+        }
+
+        .stat-card-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+        }
+
+        .stat-card-description {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        .total {
+            border-top-color: var(--primary-color);
+        }
+
+        .active {
+            border-top-color: var(--success-color);
+        }
+
+        .expired {
+            border-top-color: var(--danger-color);
+        }
+
+        .word {
+            border-top-color: var(--warning-color);
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            width: 100%;
+            height: 6px;
+            background-color: var(--medium-gray);
+            border-radius: 3px;
+            margin-top: 0.4rem;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            border-radius: 3px;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border-radius: var(--rounded-sm);
+            border: none;
+            font-weight: 500;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--accent-color);
+        }
+
+        .btn i {
+            font-size: 0.8rem;
+        }
+
+        /* Filters */
+        .filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            position: relative;
+            min-width: 160px;
+            flex-grow: 1;
+        }
+
+        .filter-label {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--text-light);
+            margin-bottom: 0.3rem;
+            font-weight: 500;
+        }
+
+        .filter-select {
+            width: 100%;
+            padding: 0.6rem 1rem;
+            border: 1px solid var(--medium-gray);
+            border-radius: var(--rounded-sm);
+            font-size: 0.85rem;
+            background-color: var(--white);
+            appearance: none;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(30, 71, 138, 0.1);
+        }
+
+        .filter-icon {
+            position: absolute;
+            right: 1rem;
+            top: 58%;
+            pointer-events: none;
+            color: var(--text-light);
+            font-size: 0.7rem;
+        }
+
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.2rem;
+        }
+
+        /* Apartado Card */
+        .apartado-card {
+            background-color: var(--white);
+            border-radius: var(--rounded);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: var(--transition);
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+
+        .apartado-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .card-header {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 0.8rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-title i {
+            font-size: 0.9rem;
+        }
+
+        .badge {
+            padding: 0.3rem 0.7rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-deposito {
+            background-color: var(--success-light);
+            color: var(--success-color);
+        }
+
+        .badge-palabra {
+            background-color: var(--warning-light);
+            color: var(--warning-color);
+        }
+
+        .card-body {
+            padding: 1.2rem;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .info-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .info-label {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            margin-bottom: 0.2rem;
+            display: block;
+            font-weight: 500;
+        }
+
+        .info-value {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .info-value.highlight {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .timer-container {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--medium-gray);
+        }
+
+        .timer {
+            text-align: center;
+            padding: 0.6rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: var(--rounded-sm);
+            transition: var(--transition);
+        }
+
+        .timer-verde {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+            border: 1px solid var(--success-color);
+        }
+
+        .timer-amarillo {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: var(--warning-color);
+            border: 1px solid var(--warning-color);
+        }
+
+        .timer-rojo {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--danger-color);
+            border: 1px solid var(--danger-color);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.8; }
+            100% { opacity: 1; }
+        }
+
+        .details-link {
+            display: block;
+            text-align: right;
+            margin-top: 0.8rem;
+            font-size: 0.8rem;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .details-link:hover {
+            color: var(--secondary-color);
+        }
+
+        .details-link i {
+            margin-left: 0.3rem;
+            font-size: 0.7rem;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            grid-column: 1 / -1;
+            background-color: var(--white);
+            border-radius: var(--rounded);
+            box-shadow: var(--shadow);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            color: var(--medium-gray);
+            margin-bottom: 1rem;
+        }
+
+        .empty-state h3 {
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            font-size: 1.2rem;
+        }
+
+        .empty-state p {
+            color: var(--dark-gray);
+            font-size: 0.9rem;
+            max-width: 400px;
+            margin: 0 auto 1.5rem;
+        }
+
+        /* Desktop Styles */
+        @media (min-width: 768px) {
+            .navbar-desktop {
+                display: block;
+            }
+
+            .navbar-mobile {
+                display: none;
+            }
+
+            .container {
+                padding: 1.5rem 2rem;
+            }
+
+            .stats-container {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 1rem;
+            }
+
+            .filter-group {
+                min-width: 180px;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .apartado-card:nth-child(1) { animation-delay: 0.1s; }
+        .apartado-card:nth-child(2) { animation-delay: 0.2s; }
+        .apartado-card:nth-child(3) { animation-delay: 0.3s; }
+        .apartado-card:nth-child(4) { animation-delay: 0.4s; }
+    </style>
+</head>
+<body>
+    <!-- Navbar Desktop -->
+    <nav class="navbar-desktop">
+        <div class="navbar-desktop-container">
+            <div class="logo">
+                <i class="fas fa-home"></i>
+                <span>Nelva Bienes Raíces</span>
+            </div>
+            <div class="nav-links">
+                <a href="#"><i class="fas fa-home"></i> Inicio</a>
+                <a href="#"><i class="fas fa-map-marked-alt"></i> Fraccionamientos</a>
+                <a href="#" class="active"><i class="fas fa-calendar-check"></i> Apartados</a>
+                <a href="#"><i class="fas fa-user"></i> Perfil</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">
+                <i class="fas fa-calendar-check"></i>
+                <span>Control de Apartados</span>
+            </h1>
+            <div class="page-actions">
+                <button class="btn btn-primary">
+                    <i class="fas fa-filter"></i> Filtros
+                </button>
+                
+            </div>
+        </div>
+
+        <!-- Stats Overview -->
+        <div class="stats-container">
+            <div class="stat-card total">
+                <h3 class="stat-card-title">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Total Apartados</span>
+                </h3>
+                <p class="stat-card-value">48</p>
+                <p class="stat-card-description">Este mes</p>
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: 100%"></div>
+                </div>
+            </div>
+            <div class="stat-card active">
+                <h3 class="stat-card-title">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Activos</span>
+                </h3>
+                <p class="stat-card-value">32</p>
+                <p class="stat-card-description">Vigentes</p>
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: 67%"></div>
+                </div>
+            </div>
+            <div class="stat-card expired">
+                <h3 class="stat-card-title">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span>Vencidos</span>
+                </h3>
+                <p class="stat-card-value">9</p>
+                <p class="stat-card-description">Por atender</p>
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: 19%"></div>
+                </div>
+            </div>
+            <div class="stat-card word">
+                <h3 class="stat-card-title">
+                    <i class="fas fa-handshake"></i>
+                    <span>De palabra</span>
+                </h3>
+                <p class="stat-card-value">7</p>
+                <p class="stat-card-description">Sin depósito</p>
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: 14%"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filtros -->
+        <div class="filters">
+            <div class="filter-group">
+                <label class="filter-label">Tipo de apartado</label>
+                <select class="filter-select">
+                    <option>Todos</option>
+                    <option>Con depósito</option>
+                    <option>De palabra</option>
+                </select>
+                <i class="fas fa-chevron-down filter-icon"></i>
+            </div>
+            <div class="filter-group">
+                <label class="filter-label">Fraccionamiento</label>
+                <select class="filter-select">
+                    <option>Todos</option>
+                    <option>OCEÁNICA</option>
+                    <option>REAL CAMPESTRE</option>
+                    <option>SICARÚ</option>
+                </select>
+                <i class="fas fa-chevron-down filter-icon"></i>
+            </div>
+            <div class="filter-group">
+                <label class="filter-label">Estado</label>
+                <select class="filter-select">
+                    <option>Activos</option>
+                    <option>Vencidos</option>
+                    <option>Todos</option>
+                </select>
+                <i class="fas fa-chevron-down filter-icon"></i>
+            </div>
+            <div class="filter-group">
+                <label class="filter-label">Vendedor</label>
+                <select class="filter-select">
+                    <option>Todos</option>
+                    <option>Juan Pérez</option>
+                    <option>Ana López</option>
+                    <option>Luisa Martínez</option>
+                </select>
+                <i class="fas fa-chevron-down filter-icon"></i>
+            </div>
+        </div>
+
+        <!-- Cards Grid -->
+        <div class="cards-grid">
+            <!-- Card 1 - Con depósito -->
+            <div class="apartado-card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-tag"></i>
+                        <span>L-25</span>
+                    </h3>
+                    <span class="badge badge-deposito">Con depósito</span>
+                </div>
+                <div class="card-body">
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">Cliente</span>
+                            <span class="info-value highlight">María González</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Fraccionamiento</span>
+                            <span class="info-value">OCEÁNICA</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Vendedor</span>
+                            <span class="info-value">Juan Pérez</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Fecha</span>
+                            <span class="info-value">25/07/2023</span>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Vence</span>
+                        <span class="info-value highlight">27/07 - 18:00</span>
+                    </div>
+                    
+                    <div class="timer-container">
+                        <div class="timer timer-verde" id="timer1">
+                            <i class="fas fa-clock"></i> 20h restantes
+                        </div>
+                    </div>
+                    
+                    <a href="#" class="details-link">
+                        Ver detalles <i class="fas fa-chevron-right"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Card 2 - De palabra -->
+            <div class="apartado-card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-tag"></i>
+                        <span>L-42</span>
+                    </h3>
+                    <span class="badge badge-palabra">De palabra</span>
+                </div>
+                <div class="card-body">
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">Cliente</span>
+                            <span class="info-value highlight">Carlos Ruiz</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Fraccionamiento</span>
+                            <span class="info-value">REAL CAMPESTRE</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Vendedor</span>
+                            <span class="info-value">Ana López</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Fecha</span>
+                            <span class="info-value">24/07/2023</span>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Vence</span>
+                        <span class="info-value highlight">26/07 - 12:00</span>
+                    </div>
+                    
+                    <div class="timer-container">
+                        <div class="timer timer-amarillo" id="timer2">
+                            <i class="fas fa-clock"></i> 10h restantes
+                        </div>
+                    </div>
+                    
+                    <a href="#" class="details-link">
+                        Ver detalles <i class="fas fa-chevron-right"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Card 3 - Con depósito (urgente) -->
+            <div class="apartado-card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-tag"></i>
+                        <span>L-18</span>
+                    </h3>
+                    <span class="badge badge-deposito">Con depósito</span>
+                </div>
+                <div class="card-body">
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">Cliente</span>
+                            <span class="info-value highlight">Roberto Sánchez</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Fraccionamiento</span>
+                            <span class="info-value">SICARÚ</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Vendedor</span>
+                            <span class="info-value">Luisa Martínez</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Fecha</span>
+                            <span class="info-value">23/07/2023</span>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Vence</span>
+                        <span class="info-value highlight">25/07 - 14:00</span>
+                    </div>
+                    
+                    <div class="timer-container">
+                        <div class="timer timer-rojo" id="timer3">
+                            <i class="fas fa-clock"></i> 2h restantes
+                        </div>
+                    </div>
+                    
+                    <a href="#" class="details-link">
+                        Ver detalles <i class="fas fa-chevron-right"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Card 4 - Ejemplo adicional -->
+            <div class="apartado-card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-tag"></i>
+                        <span>L-07</span>
+                    </h3>
+                    <span class="badge badge-palabra">De palabra</span>
+                </div>
+                <div class="card-body">
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">Cliente</span>
+                            <span class="info-value highlight">Laura Fernández</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Fraccionamiento</span>
+                            <span class="info-value">OCEÁNICA</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Vendedor</span>
+                            <span class="info-value">Miguel Ángel</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Fecha</span>
+                            <span class="info-value">26/07/2023</span>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Vence</span>
+                        <span class="info-value highlight">28/07 - 16:00</span>
+                    </div>
+                    
+                    <div class="timer-container">
+                        <div class="timer timer-verde" id="timer4">
+                            <i class="fas fa-clock"></i> 45h restantes
+                        </div>
+                    </div>
+                    
+                    <a href="#" class="details-link">
+                        Ver detalles <i class="fas fa-chevron-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navbar Mobile -->
+    <nav class="navbar-mobile">
+        <a href="#" class="nav-item">
+            <i class="fas fa-home"></i>
+            <span>Inicio</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="fas fa-map-marked-alt"></i>
+            <span>Fraccionamientos</span>
+        </a>
+        <a href="#" class="nav-item active">
+            <i class="fas fa-calendar-check"></i>
+            <span>Apartados</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="fas fa-user"></i>
+            <span>Perfil</span>
+        </a>
+    </nav>
+
+    <script>
+        // Aquí iría el código JavaScript para:
+        // 1. Calcular las horas restantes para cada apartado
+        // 2. Actualizar los temporizadores en tiempo real
+        // 3. Cambiar los colores según el tiempo restante
+        // 4. Filtrar las cards según los selectores
+        
+        function actualizarTemporizadores() {
+            // Ejemplo de implementación:
+            // 1. Obtener fecha de vencimiento de cada apartado
+            // 2. Calcular diferencia con fecha actual
+            // 3. Actualizar el texto y color según las horas restantes
+            // 4. Repetir cada minuto
+            
+            // Por ahora solo mostramos los valores de ejemplo
+        }
+        
+        document.addEventListener('DOMContentLoaded', actualizarTemporizadores);
+    </script>
+</body>
+</html>
