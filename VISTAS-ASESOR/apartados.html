@@ -573,6 +573,29 @@
         .apartado-card:nth-child(2) { animation-delay: 0.2s; }
         .apartado-card:nth-child(3) { animation-delay: 0.3s; }
         .apartado-card:nth-child(4) { animation-delay: 0.4s; }
+
+        /*ESTILOS DEL MODAL PARA SALIR*/
+        .modal-overlay {
+            position: fixed; left: 0; top: 0; width: 100vw; height: 100vh;
+            background: rgba(30,71,138,0.18); z-index: 999;
+        }
+        .modal-content {
+            position: fixed; left: 50%; top: 50%; transform: translate(-50%,-50%);
+            background: var(--white); border-radius: var(--rounded); box-shadow: var(--shadow-lg);
+            padding: 2rem 1.5rem; z-index: 1000; min-width: 300px; text-align: center;
+        }
+        
+        .modal-actions { margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: center; }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--accent-color);
+        }
     </style>
 </head>
 <body>
@@ -584,10 +607,11 @@
                 <span>Nelva Bienes Raíces</span>
             </div>
             <div class="nav-links">
-                <a href="#"><i class="fas fa-home"></i> Inicio</a>
-                <a href="#"><i class="fas fa-map-marked-alt"></i> Fraccionamientos</a>
-                <a href="#" class="active"><i class="fas fa-calendar-check"></i> Apartados</a>
-                <a href="#"><i class="fas fa-user"></i> Perfil</a>
+                <a href="inicio.html"><i class="fas fa-home"></i> Inicio</a>
+                <a href="#"  class="active"><i class="fas fa-calendar-check"></i> Apartados</a>
+                <a href="ventas.html"><i class="fas fa-history"></i> Ventas</a>
+                <a href="perfil.html"><i class="fas fa-user"></i> Perfil</a>
+                <a href="#" id="logout-btn-desktop"><i class="fas fa-sign-out-alt"></i> Salir</a>
             </div>
         </div>
     </nav>
@@ -883,24 +907,27 @@
 
     <!-- Navbar Mobile -->
     <nav class="navbar-mobile">
-        <a href="#" class="nav-item">
+        <a href="inicio.html" class="nav-item active">
             <i class="fas fa-home"></i>
             <span>Inicio</span>
         </a>
         <a href="#" class="nav-item">
-            <i class="fas fa-map-marked-alt"></i>
-            <span>Fraccionamientos</span>
-        </a>
-        <a href="#" class="nav-item active">
             <i class="fas fa-calendar-check"></i>
             <span>Apartados</span>
         </a>
-        <a href="#" class="nav-item">
+        <a href="ventas.html" class="nav-item">
+            <i class="fas fa-history"></i>
+            <span>Ventas</span>
+        </a>
+        <a href="perfil.html" class="nav-item">
             <i class="fas fa-user"></i>
             <span>Perfil</span>
         </a>
+        <a href="#" class="nav-item" id="logout-btn-mobile">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Salir</span>
+        </a>
     </nav>
-
     <script>
         // Aquí iría el código JavaScript para:
         // 1. Calcular las horas restantes para cada apartado
@@ -919,6 +946,50 @@
         }
         
         document.addEventListener('DOMContentLoaded', actualizarTemporizadores);
+    </script>
+
+
+<!-- 1. MODAL HTML: pega antes de </body> -->
+    <div id="logout-modal" style="display:none;">
+    <div class="modal-overlay"></div>
+    <div class="modal-content">
+        <h2>¿Cerrar sesión?</h2>
+        <p>¿Estás seguro que deseas salir de tu cuenta?</p>
+        <div class="modal-actions">
+        <button id="confirm-logout" class="btn btn-primary">Sí, salir</button>
+        <button id="cancel-logout" class="btn btn-outline">Cancelar</button>
+        </div>
+    </div>
+    </div>
+
+
+    <script>
+        // Selección de botones
+        const logoutBtns = [document.getElementById('logout-btn-desktop'), document.getElementById('logout-btn-mobile')];
+        const modal = document.getElementById('logout-modal');
+        const confirmBtn = document.getElementById('confirm-logout');
+        const cancelBtn = document.getElementById('cancel-logout');
+
+        logoutBtns.forEach(btn => {
+            if (btn) btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            modal.style.display = 'block';
+            });
+        });
+
+        cancelBtn.addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+
+        confirmBtn.addEventListener('click', function() {
+            // Redirige o realiza el cierre de sesión
+            window.location.href = 'login.html'; // Cambia la URL según tu flujo
+        });
+
+        // Cierra el modal si se hace click fuera del contenido
+        modal.querySelector('.modal-overlay').addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
     </script>
 </body>
 </html>
