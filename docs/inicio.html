@@ -564,6 +564,37 @@
         .btn-outline:hover {
             background-color: var(--accent-color);
         }
+
+
+        .btn-primary.ver-detalles,
+        .fraccionamiento-actions .btn-primary {
+            background: linear-gradient(90deg, #1e478a 60%, #398CA2 100%);
+            color: #fff;
+            border: none;
+            border-radius: 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            box-shadow: 0 2px 12px rgba(30,71,138,0.10);
+            padding: 0.7rem 1.6rem;
+            transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary.ver-detalles:hover,
+        .fraccionamiento-actions .btn-primary:hover {
+            background: linear-gradient(90deg, #398CA2 60%, #1e478a 100%);
+            transform: translateY(-2px) scale(1.04);
+            box-shadow: 0 4px 18px rgba(30,71,138,0.16);
+        }
+
+        .btn-primary.ver-detalles i,
+        .fraccionamiento-actions .btn-primary i {
+            font-size: 1.15rem;
+            margin-right: 0.2rem;
+        }
     </style>
 </head>
 <body>
@@ -647,14 +678,16 @@
         </h2>
         
         <div class="fraccionamientos-list">
-            <!-- Fraccionamiento 1 -->
+            
+
+            <!-- Fraccionamiento 2 -->
             <div class="fraccionamiento-card">
                 <div class="fraccionamiento-image-container">
-                    <img src="https://nelvabienesraices.com/wp-content/uploads/2025/01/OCEANICA-BLANCO.png" alt="Bosques del Valle" class="fraccionamiento-image">
+                    <img src="https://nelvabienesraices.com/wp-content/uploads/2025/01/OCEANICA-BLANCO.png" alt="Villas del Mar" class="fraccionamiento-image">
                 </div>
                 <div class="fraccionamiento-content">
                     <div class="fraccionamiento-header">
-                        
+                    
                         <div class="fraccionamiento-info">
                             <h3 class="fraccionamiento-name">OCEÁNICA</h3>
                             <p class="fraccionamiento-location">
@@ -665,48 +698,6 @@
                         </div>
                     </div>
                     <div class="fraccionamiento-stats">
-                        <div class="stat-item sold-stat">
-                            <span class="stat-number">50</span>
-                            <span class="stat-label">Disponibles</span>
-                        </div>
-
-                        <div class="stat-item reserved-stat">
-                            <span class="stat-number">18</span>
-                            <span class="stat-label">Apartados</span>
-                        </div>  
-                       
-                        <div class="stat-item available-stat">
-                            <span class="stat-number">32</span>
-                            <span class="stat-label">Vendidos</span>
-                        </div>
-                    </div>
-                    <div class="fraccionamiento-actions">
-                        <button class="btn btn-primary">
-                            <i class="fas fa-eye"></i>
-                            <span>Ver Detalles</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Fraccionamiento 2 -->
-            <div class="fraccionamiento-card">
-                <div class="fraccionamiento-image-container">
-                    <img src="https://nelvabienesraices.com/wp-content/uploads/2025/01/REAL-CAMPESTRE-BLANCO-1024x485.png" alt="Villas del Mar" class="fraccionamiento-image">
-                </div>
-                <div class="fraccionamiento-content">
-                    <div class="fraccionamiento-header">
-                    
-                        <div class="fraccionamiento-info">
-                            <h3 class="fraccionamiento-name">REAL CAMPESTRE</h3>
-                            <p class="fraccionamiento-location">
-                                <i class="fas fa-map-marker-alt"></i>
-                                <span>Santa María Tonameca, Oaxaca</span>
-                            </p>
-                            
-                        </div>
-                    </div>
-                    <div class="fraccionamiento-stats">
                         
                         <div class="stat-item sold-stat">
                             <span class="stat-number">50</span>
@@ -724,7 +715,7 @@
                         </div>
                     </div>
                     <div class="fraccionamiento-actions">
-                        <button class="btn btn-primary">
+                        <button class="btn btn-primary ver-detalles">
                             <i class="fas fa-eye"></i>
                             <span>Ver Detalles</span>
                         </button>
@@ -766,7 +757,7 @@
                         </div>
                     </div>
                     <div class="fraccionamiento-actions">
-                        <button class="btn btn-primary">
+                        <button class="btn btn-primary ver-detalles">
                             <i class="fas fa-eye"></i>
                             <span>Ver Detalles</span>
                         </button>
@@ -810,7 +801,7 @@
                         </div>
                     </div>
                     <div class="fraccionamiento-actions">
-                        <button class="btn btn-primary">
+                        <button class="btn btn-primary ver-detalles">
                             <i class="fas fa-eye"></i>
                             <span>Ver Detalles</span>
                         </button>
@@ -927,6 +918,14 @@
         // Cierra el modal si se hace click fuera del contenido
         modal.querySelector('.modal-overlay').addEventListener('click', function() {
             modal.style.display = 'none';
+        });
+
+
+        // Redirigir al hacer click en "Ver Detalles"
+        document.querySelectorAll('.ver-detalles').forEach(btn => {
+            btn.addEventListener('click', function() {
+                window.location.href = 'fraccionamiento.html';
+            });
         });
     </script>
 </body>
