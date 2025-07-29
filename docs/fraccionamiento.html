@@ -552,6 +552,209 @@
         .development-plan, .development-info, .development-map {
             animation: fadeIn 0.3s ease-out forwards;
         }
+
+
+
+
+        /*ESTILOS PARA EL MODAL DE APARTADO*/
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: var(--white);
+            border-radius: var(--rounded);
+            box-shadow: var(--shadow-lg);
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 2rem;
+            position: relative;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            color: var(--text-light);
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--medium-gray);
+            border-radius: var(--rounded-sm);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(30, 71, 138, 0.1);
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .radio-option {
+            flex: 1;
+        }
+
+        .radio-input {
+            display: none;
+        }
+
+        .radio-label {
+            display: block;
+            padding: 1rem;
+            border: 1px solid var(--medium-gray);
+            border-radius: var(--rounded-sm);
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .radio-input:checked + .radio-label {
+            border-color: var(--primary-color);
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        .deposit-fields {
+            display: none;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px dashed var(--medium-gray);
+        }
+
+        .receipt {
+            display: none;
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background-color: var(--light-gray);
+            border-radius: var(--rounded-sm);
+        }
+
+        .receipt-title {
+            font-size: 1.25rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .receipt-info {
+            margin-bottom: 1rem;
+        }
+
+        .receipt-info p {
+            margin-bottom: 0.5rem;
+        }
+
+        .bank-details {
+            background-color: var(--white);
+            padding: 1rem;
+            border-radius: var(--rounded-sm);
+            margin-top: 1rem;
+        }
+
+        .bank-details-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .bank-details p {
+            margin-bottom: 0.5rem;
+        }
+
+        .share-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background-color: var(--success-color);
+            color: white;
+            padding: 0.75rem 1.25rem;
+            border-radius: var(--rounded-sm);
+            text-decoration: none;
+            margin-top: 1rem;
+            transition: var(--transition);
+        }
+
+        .share-btn:hover {
+            background-color: #0d9e6d;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-3 {
+            margin-top: 1.5rem;
+        }
+
+        /* Agregamos estos nuevos estilos */
+        .lot-number-group {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .lot-number-group .form-control {
+            flex: 1;
+        }
+        
+        .lot-number-group .btn {
+            flex: 0 0 auto;
+        }
+        
+        .time-limit {
+            color: var(--warning-color);
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+        
+        .verbal-share-btn {
+            background-color: var(--primary-color);
+        }
+
     </style>
 </head>
 <body>
@@ -742,6 +945,117 @@
         </div>
     </div>
 
+
+     
+    <!-- Modal de Apartado -->
+    <div class="modal" id="reservationModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeModal">&times;</button>
+            <h2 class="modal-title">Apartar Lote</h2>
+            
+            <form id="reservationForm">
+                <div class="form-group">
+                    <label class="form-label">Tipo de apartado</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="verbalReservation" name="reservationType" value="verbal" class="radio-input" checked>
+                            <label for="verbalReservation" class="radio-label">
+                                <i class="fas fa-handshake"></i> De palabra
+                            </label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="depositReservation" name="reservationType" value="deposit" class="radio-input">
+                            <label for="depositReservation" class="radio-label">
+                                <i class="fas fa-money-bill-wave"></i> Con depósito
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="lotNumber" class="form-label">Número de lote</label>
+                    <div class="lot-number-group">
+                        <input type="text" id="lotNumber" class="form-control" required placeholder="Ej. A12, B5, etc.">
+                        <button type="button" class="btn btn-outline" id="viewLotBtn">
+                            <i class="fas fa-map-marked-alt"></i> Ver
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="firstName" class="form-label">Nombres</label>
+                    <input type="text" id="firstName" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="lastName" class="form-label">Apellidos</label>
+                    <input type="text" id="lastName" class="form-control" required>
+                </div>
+                
+                <div id="depositFields" class="deposit-fields">
+                    <div class="form-group">
+                        <label for="amount" class="form-label">Cantidad a depositar (MXN)</label>
+                        <input type="number" id="amount" class="form-control" min="1000">
+                    </div>
+                </div>
+                
+                <div class="form-group mt-3">
+                    <button type="submit" class="btn btn-primary btn-lg" style="width: 100%;">
+                        <i class="fas fa-paper-plane"></i> Enviar Solicitud
+                    </button>
+                </div>
+            </form>
+            
+            <div id="verbalReceipt" class="receipt">
+                <h3 class="receipt-title">Resumen de Apartado</h3>
+                <div class="receipt-info">
+                    <p><strong>Nombre:</strong> <span id="verbalName"></span></p>
+                    <p><strong>Lote:</strong> <span id="verbalLot"></span></p>
+                    <p><strong>Tipo:</strong> Apartado de palabra</p>
+                    <p><strong>Fecha y hora límite:</strong> <span id="deadlineDate"></span></p>
+                    <p class="time-limit"><i class="fas fa-clock"></i> Vence exactamente en 2 días</p>
+                    <p><strong>Fraccionamiento:</strong> OCEÁNICA</p>
+                </div>
+                <div class="text-center">
+                    <p>Una vez finalizado el tiempo de apartado sin una confirmación el lote volverá a estar en disponible.</p>
+                    <a href="#" class="share-btn verbal-share-btn" id="verbalWhatsappShare">
+                        <i class="fab fa-whatsapp"></i> Notificar
+                    </a>
+                    <button class="btn btn-outline mt-3" id="closeAfterVerbal">
+                        <i class="fas fa-check"></i> Entendido
+                    </button>
+                </div>
+            </div>
+            
+            <div id="depositReceipt" class="receipt">
+                <h3 class="receipt-title">Datos para Depósito</h3>
+                <div class="receipt-info">
+                    <p><strong>Nombre:</strong> <span id="depositName"></span></p>
+                    <p><strong>Lote:</strong> <span id="depositLot"></span></p>
+                    <p><strong>Tipo:</strong> Apartado con depósito</p>
+                    <p><strong>Monto a depositar:</strong> $<span id="depositAmount"></span> MXN</p>
+                    <p><strong>Fraccionamiento:</strong> OCEÁNICA</p>
+                </div>
+                
+                <div class="bank-details">
+                    <h4 class="bank-details-title">Datos Bancarios</h4>
+                    <p><strong>Banco:</strong> BBVA</p>
+                    <p><strong>Nombre:</strong> Nelva Bienes Raíces S.A. de C.V.</p>
+                    <p><strong>Cuenta:</strong> 0123 4567 8910 1112</p>
+                    <p><strong>CLABE:</strong> 012 320 0123 4567 8910 11</p>
+                    <p><strong>Referencia:</strong> OCE-<span id="referenceNumber"></span></p>
+                </div>
+                
+                <div class="text-center">
+                    <p>Una vez realizado el depósito, se deberá adjuntar el comprobante por en los detalles del apartado.</p>
+                    <a href="#" class="share-btn" id="whatsappShare">
+                        <i class="fab fa-whatsapp"></i> Compartir por WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Navbar Mobile -->
     <nav class="navbar-mobile">
         <a href="inicio.html" class="nav-item active">
@@ -883,6 +1197,169 @@
             
             planContainer.scrollLeft += scrollX;
             planContainer.scrollTop += scrollY;
+        });
+
+
+
+
+        // Modal de apartado
+        const reservationModal = document.getElementById('reservationModal');
+        const closeModal = document.getElementById('closeModal');
+        const reservationForm = document.getElementById('reservationForm');
+        const depositFields = document.getElementById('depositFields');
+        const verbalReceipt = document.getElementById('verbalReceipt');
+        const depositReceipt = document.getElementById('depositReceipt');
+        const verbalName = document.getElementById('verbalName');
+        const depositName = document.getElementById('depositName');
+        const verbalLot = document.getElementById('verbalLot');
+        const depositLot = document.getElementById('depositLot');
+        const depositAmount = document.getElementById('depositAmount');
+        const deadlineDate = document.getElementById('deadlineDate');
+        const referenceNumber = document.getElementById('referenceNumber');
+        const closeAfterVerbal = document.getElementById('closeAfterVerbal');
+        const whatsappShare = document.getElementById('whatsappShare');
+        const verbalWhatsappShare = document.getElementById('verbalWhatsappShare');
+        const lotNumber = document.getElementById('lotNumber');
+        const viewLotBtn = document.getElementById('viewLotBtn');
+
+        // Botón para abrir el modal
+        document.querySelector('.action-buttons .btn-primary').addEventListener('click', function() {
+            reservationModal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        });
+
+        // Cerrar modal
+        closeModal.addEventListener('click', function() {
+            reservationModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+
+        // Cerrar al hacer clic fuera del modal
+        reservationModal.addEventListener('click', function(e) {
+            if (e.target === reservationModal) {
+                reservationModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Mostrar/ocultar campos de depósito según selección
+        document.querySelectorAll('input[name="reservationType"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (this.value === 'deposit') {
+                    depositFields.style.display = 'block';
+                } else {
+                    depositFields.style.display = 'none';
+                }
+            });
+        });
+
+        // Botón para ver lote
+        viewLotBtn.addEventListener('click', function() {
+            if (lotNumber.value.trim() === '') {
+                alert('Por favor ingrese un número de lote');
+                return;
+            }
+            alert(`Mostrando ubicación del lote ${lotNumber.value} en el plano`);
+            // Aquí puedes implementar la lógica para resaltar el lote en el plano
+        });
+
+        // Formatear fecha y hora en español
+        function formatDateTime(date) {
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true
+            };
+            return date.toLocaleDateString('es-ES', options);
+        }
+
+        // Enviar formulario
+        reservationForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const fullName = `${firstName} ${lastName}`;
+            const lot = lotNumber.value;
+            const reservationType = document.querySelector('input[name="reservationType"]:checked').value;
+            
+            if (!lot) {
+                alert('Por favor ingrese el número de lote');
+                return;
+            }
+            
+            if (reservationType === 'verbal') {
+                // Mostrar recibo de apartado de palabra
+                verbalName.textContent = fullName;
+                verbalLot.textContent = lot;
+                
+                // Calcular fecha límite exacta (2 días exactos a partir de ahora)
+                const now = new Date();
+                const deadline = new Date(now.getTime() + (2 * 24 * 60 * 60 * 1000)); // 2 días exactos
+                
+                deadlineDate.textContent = formatDateTime(deadline);
+                
+                // Configurar WhatsApp share para apartado verbal
+                const verbalMessage = `*Apartado de un lote - OCEÁNICA*\n\n` +
+                                     
+                                     `Hola, notifico que realicé un apartado de palabra para el lote ${lot} ` +`con ${fullName},\n\n` +
+                                     `vencerá el *${formatDateTime(deadline)}*.\n\n`;
+                
+                verbalWhatsappShare.href = `https://wa.me/?text=${encodeURIComponent(verbalMessage)}`;
+                
+                verbalReceipt.style.display = 'block';
+                depositReceipt.style.display = 'none';
+                reservationForm.style.display = 'none';
+            } else {
+                // Mostrar recibo de apartado con depósito
+                const amount = document.getElementById('amount').value;
+                
+                if (!amount || amount < 1000) {
+                    alert('El monto mínimo de depósito es $1,000 MXN');
+                    return;
+                }
+                
+                depositName.textContent = fullName;
+                depositLot.textContent = lot;
+                depositAmount.textContent = amount;
+                referenceNumber.textContent = Math.floor(1000 + Math.random() * 9000); // Número de referencia aleatorio
+                
+                // Configurar WhatsApp share para apartado con depósito
+                const depositMessage = `*Solicitud de Apartado - OCEÁNICA*\n\n` +
+                                     `Nombre: ${fullName}\n` +
+                                     `Lote: ${lot}\n` +
+                                     `Monto a depositar: $${amount} MXN\n` +
+                                     `Referencia: OCE-${referenceNumber.textContent}\n\n` +
+                                     `Datos bancarios:\n` +
+                                     `Banco: BBVA\n` +
+                                     `Nombre: Nelva Bienes Raíces S.A. de C.V.\n` +
+                                     `Cuenta: 0123 4567 8910 1112\n` +
+                                     `CLABE: 012 320 0123 4567 8910 11\n\n` +
+                                     `Una vez realizado el depósito, se deberá adjuntar el comprobante en los detalles del apartado.`;
+                
+                whatsappShare.href = `https://wa.me/?text=${encodeURIComponent(depositMessage)}`;
+                
+                depositReceipt.style.display = 'block';
+                verbalReceipt.style.display = 'none';
+                reservationForm.style.display = 'none';
+            }
+        });
+
+        // Cerrar modal después de ver recibo verbal
+        closeAfterVerbal.addEventListener('click', function() {
+            reservationModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            
+            // Resetear formulario
+            reservationForm.reset();
+            reservationForm.style.display = 'block';
+            verbalReceipt.style.display = 'none';
+            depositReceipt.style.display = 'none';
+            depositFields.style.display = 'none';
         });
     </script>
 </body>
