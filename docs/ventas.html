@@ -882,14 +882,7 @@
                 });
             });
             
-            // Ejemplo de manejo de botón de detalles
-            document.querySelectorAll('.btn-primary.btn-sm').forEach(button => {
-                button.addEventListener('click', function() {
-                    // Aquí iría la lógica para mostrar detalles de la venta
-                    const saleTitle = this.closest('.sale-card').querySelector('.sale-title span').textContent;
-                    alert(`Mostrando detalles de: ${saleTitle}`);
-                });
-            });
+            
         });
 
 
@@ -937,6 +930,25 @@
         // Cierra el modal si se hace click fuera del contenido
         modal.querySelector('.modal-overlay').addEventListener('click', function() {
             modal.style.display = 'none';
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Ejemplo de implementación de filtros
+            const filterSelects = document.querySelectorAll('.filter-select');
+            
+            filterSelects.forEach(select => {
+                select.addEventListener('change', function() {
+                    // Aquí iría la lógica para filtrar las ventas
+                    console.log(`Filtrar por: ${this.value}`);
+                });
+            });
+            
+            // Redirigir al hacer click en el botón de detalles
+            document.querySelectorAll('.btn-primary.btn-sm').forEach(button => {
+                button.addEventListener('click', function() {
+                    window.location.href = 'detallesVenta.html';
+                });
+            });
         });
     </script>
 </body>
