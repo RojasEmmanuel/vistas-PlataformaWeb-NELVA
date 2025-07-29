@@ -1025,7 +1025,7 @@
                     <label class="form-label">Lote(s) a apartar</label>
                     <div class="lot-list" id="lotList">
                         <div class="lot-item">
-                            <input type="text" class="form-control lot-number" required placeholder="Ej. A12, B5, etc.">
+                            <input type="text" class="form-control lot-number" required placeholder="Ej. 12, 5, etc.">
                             <button type="button" class="remove-lot">
                                 <i class="fas fa-times"></i>
                             </button>
@@ -1312,7 +1312,7 @@
             const newLotItem = document.createElement('div');
             newLotItem.className = 'lot-item';
             newLotItem.innerHTML = `
-                <input type="text" class="form-control lot-number" required placeholder="Ej. A12, B5, etc.">
+                <input type="text" class="form-control lot-number" required placeholder="Ej. 12, 5, etc.">
                 <button type="button" class="remove-lot">
                     <i class="fas fa-times"></i>
                 </button>
@@ -1406,7 +1406,7 @@
                     alert('El monto mínimo de depósito es $1,000 MXN');
                     return;
                 }
-                    
+
                 depositName.textContent = fullName;
                 depositLots.textContent = lotNumbers.join(', ');
                 depositAmount.textContent = amount;
