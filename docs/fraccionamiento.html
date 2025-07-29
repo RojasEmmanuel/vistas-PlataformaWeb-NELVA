@@ -755,6 +755,55 @@
             background-color: var(--primary-color);
         }
 
+
+        /* Nuevos estilos para múltiples lotes */
+        .lot-list {
+            margin-top: 1rem;
+        }
+        
+        .lot-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+            padding: 0.5rem;
+            background-color: var(--light-gray);
+            border-radius: var(--rounded-sm);
+        }
+        
+        .lot-item input {
+            flex: 1;
+        }
+        
+        .remove-lot {
+            color: var(--danger-color);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        
+        .add-lot-btn {
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary-color);
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .time-limit {
+            color: var(--warning-color);
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+        
+        .verbal-share-btn {
+            background-color: var(--primary-color);
+        }
+
     </style>
 </head>
 <body>
@@ -951,7 +1000,7 @@
     <div class="modal" id="reservationModal">
         <div class="modal-content">
             <button class="close-modal" id="closeModal">&times;</button>
-            <h2 class="modal-title">Apartar Lote</h2>
+            <h2 class="modal-title">Apartar Lote(s)</h2>
             
             <form id="reservationForm">
                 <div class="form-group">
@@ -973,13 +1022,18 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="lotNumber" class="form-label">Número de lote</label>
-                    <div class="lot-number-group">
-                        <input type="text" id="lotNumber" class="form-control" required placeholder="Ej. A12, B5, etc.">
-                        <button type="button" class="btn btn-outline" id="viewLotBtn">
-                            <i class="fas fa-map-marked-alt"></i> Ver
-                        </button>
+                    <label class="form-label">Lote(s) a apartar</label>
+                    <div class="lot-list" id="lotList">
+                        <div class="lot-item">
+                            <input type="text" class="form-control lot-number" required placeholder="Ej. A12, B5, etc.">
+                            <button type="button" class="remove-lot">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
                     </div>
+                    <button type="button" class="add-lot-btn" id="addLotBtn">
+                        <i class="fas fa-plus-circle"></i> Agregar otro lote
+                    </button>
                 </div>
                 
                 <div class="form-group">
@@ -994,7 +1048,7 @@
                 
                 <div id="depositFields" class="deposit-fields">
                     <div class="form-group">
-                        <label for="amount" class="form-label">Cantidad a depositar (MXN)</label>
+                        <label for="amount" class="form-label">Cantidad total a depositar (MXN)</label>
                         <input type="number" id="amount" class="form-control" min="1000">
                     </div>
                 </div>
@@ -1010,19 +1064,19 @@
                 <h3 class="receipt-title">Resumen de Apartado</h3>
                 <div class="receipt-info">
                     <p><strong>Nombre:</strong> <span id="verbalName"></span></p>
-                    <p><strong>Lote:</strong> <span id="verbalLot"></span></p>
+                    <p><strong>Lote(s):</strong> <span id="verbalLots"></span></p>
                     <p><strong>Tipo:</strong> Apartado de palabra</p>
                     <p><strong>Fecha y hora límite:</strong> <span id="deadlineDate"></span></p>
                     <p class="time-limit"><i class="fas fa-clock"></i> Vence exactamente en 2 días</p>
                     <p><strong>Fraccionamiento:</strong> OCEÁNICA</p>
                 </div>
                 <div class="text-center">
-                    <p>Una vez finalizado el tiempo de apartado sin una confirmación el lote volverá a estar en disponible.</p>
+                    <p>Una vez finalizado el tiempo limite se cancelará el apartado.</p>
                     <a href="#" class="share-btn verbal-share-btn" id="verbalWhatsappShare">
                         <i class="fab fa-whatsapp"></i> Notificar
                     </a>
                     <button class="btn btn-outline mt-3" id="closeAfterVerbal">
-                        <i class="fas fa-check"></i> Entendido
+                        <i class="fas fa-check"></i> Aceptar
                     </button>
                 </div>
             </div>
@@ -1031,9 +1085,9 @@
                 <h3 class="receipt-title">Datos para Depósito</h3>
                 <div class="receipt-info">
                     <p><strong>Nombre:</strong> <span id="depositName"></span></p>
-                    <p><strong>Lote:</strong> <span id="depositLot"></span></p>
+                    <p><strong>Lote(s):</strong> <span id="depositLots"></span></p>
                     <p><strong>Tipo:</strong> Apartado con depósito</p>
-                    <p><strong>Monto a depositar:</strong> $<span id="depositAmount"></span> MXN</p>
+                    <p><strong>Monto total a depositar:</strong> $<span id="depositAmount"></span> MXN</p>
                     <p><strong>Fraccionamiento:</strong> OCEÁNICA</p>
                 </div>
                 
@@ -1047,9 +1101,9 @@
                 </div>
                 
                 <div class="text-center">
-                    <p>Una vez realizado el depósito, se deberá adjuntar el comprobante por en los detalles del apartado.</p>
+                    <p>Una vez realizado el depósito, adjunte el comprobante para validar el pago.</p>
                     <a href="#" class="share-btn" id="whatsappShare">
-                        <i class="fab fa-whatsapp"></i> Compartir por WhatsApp
+                        <i class="fab fa-whatsapp"></i> Notificar
                     </a>
                 </div>
             </div>
@@ -1211,16 +1265,16 @@
         const depositReceipt = document.getElementById('depositReceipt');
         const verbalName = document.getElementById('verbalName');
         const depositName = document.getElementById('depositName');
-        const verbalLot = document.getElementById('verbalLot');
-        const depositLot = document.getElementById('depositLot');
+        const verbalLots = document.getElementById('verbalLots');
+        const depositLots = document.getElementById('depositLots');
         const depositAmount = document.getElementById('depositAmount');
         const deadlineDate = document.getElementById('deadlineDate');
         const referenceNumber = document.getElementById('referenceNumber');
         const closeAfterVerbal = document.getElementById('closeAfterVerbal');
         const whatsappShare = document.getElementById('whatsappShare');
         const verbalWhatsappShare = document.getElementById('verbalWhatsappShare');
-        const lotNumber = document.getElementById('lotNumber');
-        const viewLotBtn = document.getElementById('viewLotBtn');
+        const lotList = document.getElementById('lotList');
+        const addLotBtn = document.getElementById('addLotBtn');
 
         // Botón para abrir el modal
         document.querySelector('.action-buttons .btn-primary').addEventListener('click', function() {
@@ -1253,14 +1307,40 @@
             });
         });
 
-        // Botón para ver lote
-        viewLotBtn.addEventListener('click', function() {
-            if (lotNumber.value.trim() === '') {
-                alert('Por favor ingrese un número de lote');
-                return;
-            }
-            alert(`Mostrando ubicación del lote ${lotNumber.value} en el plano`);
-            // Aquí puedes implementar la lógica para resaltar el lote en el plano
+        // Agregar nuevo campo de lote
+        addLotBtn.addEventListener('click', function() {
+            const newLotItem = document.createElement('div');
+            newLotItem.className = 'lot-item';
+            newLotItem.innerHTML = `
+                <input type="text" class="form-control lot-number" required placeholder="Ej. A12, B5, etc.">
+                <button type="button" class="remove-lot">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            lotList.appendChild(newLotItem);
+            
+            // Agregar evento al botón de eliminar
+            newLotItem.querySelector('.remove-lot').addEventListener('click', function() {
+                // No permitir eliminar el último lote
+                if (lotList.children.length > 1) {
+                    lotList.removeChild(newLotItem);
+                } else {
+                    alert('Debe especificar al menos un lote');
+                }
+            });
+        });
+
+        // Eliminar lote
+        document.querySelectorAll('.remove-lot').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const lotItem = this.closest('.lot-item');
+                // No permitir eliminar el último lote
+                if (lotList.children.length > 1) {
+                    lotList.removeChild(lotItem);
+                } else {
+                    alert('Debe especificar al menos un lote');
+                }
+            });
         });
 
         // Formatear fecha y hora en español
@@ -1284,18 +1364,20 @@
             const firstName = document.getElementById('firstName').value;
             const lastName = document.getElementById('lastName').value;
             const fullName = `${firstName} ${lastName}`;
-            const lot = lotNumber.value;
+            const lotNumbers = Array.from(document.querySelectorAll('.lot-number')).map(input => input.value.trim());
             const reservationType = document.querySelector('input[name="reservationType"]:checked').value;
             
-            if (!lot) {
-                alert('Por favor ingrese el número de lote');
+            // Validar lotes
+            const emptyLots = lotNumbers.some(lot => lot === '');
+            if (emptyLots) {
+                alert('Por favor complete todos los números de lote');
                 return;
             }
             
             if (reservationType === 'verbal') {
                 // Mostrar recibo de apartado de palabra
                 verbalName.textContent = fullName;
-                verbalLot.textContent = lot;
+                verbalLots.textContent = lotNumbers.join(', ');
                 
                 // Calcular fecha límite exacta (2 días exactos a partir de ahora)
                 const now = new Date();
@@ -1304,10 +1386,12 @@
                 deadlineDate.textContent = formatDateTime(deadline);
                 
                 // Configurar WhatsApp share para apartado verbal
-                const verbalMessage = `*Apartado de un lote - OCEÁNICA*\n\n` +
-                                     
-                                     `Hola, notifico que realicé un apartado de palabra para el lote ${lot} ` +`con ${fullName},\n\n` +
-                                     `vencerá el *${formatDateTime(deadline)}*.\n\n`;
+                const verbalMessage = `*Notificación de Apartado - OCEÁNICA*\n\n` +
+                                     `Hola, para notificar que aparte los lotes ${lotNumbers.join(', ')} ` +
+                                     `a nombre ${fullName}`+` de vencerá el *${formatDateTime(deadline)}*\n\n` +
+                                     `Por favor acuda a nuestras oficinas para formalizar su apartado ` +
+                                     `antes de esta fecha y hora.\n\n` +
+                                     `Atentamente,\nNelva Bienes Raíces`;
                 
                 verbalWhatsappShare.href = `https://wa.me/?text=${encodeURIComponent(verbalMessage)}`;
                 
@@ -1322,24 +1406,24 @@
                     alert('El monto mínimo de depósito es $1,000 MXN');
                     return;
                 }
-                
+                    
                 depositName.textContent = fullName;
-                depositLot.textContent = lot;
+                depositLots.textContent = lotNumbers.join(', ');
                 depositAmount.textContent = amount;
                 referenceNumber.textContent = Math.floor(1000 + Math.random() * 9000); // Número de referencia aleatorio
                 
                 // Configurar WhatsApp share para apartado con depósito
                 const depositMessage = `*Solicitud de Apartado - OCEÁNICA*\n\n` +
                                      `Nombre: ${fullName}\n` +
-                                     `Lote: ${lot}\n` +
-                                     `Monto a depositar: $${amount} MXN\n` +
+                                     `Lote(s): ${lotNumbers.join(', ')}\n` +
+                                     `Monto total a depositar: $${amount} MXN\n` +
                                      `Referencia: OCE-${referenceNumber.textContent}\n\n` +
                                      `Datos bancarios:\n` +
                                      `Banco: BBVA\n` +
                                      `Nombre: Nelva Bienes Raíces S.A. de C.V.\n` +
                                      `Cuenta: 0123 4567 8910 1112\n` +
                                      `CLABE: 012 320 0123 4567 8910 11\n\n` +
-                                     `Una vez realizado el depósito, se deberá adjuntar el comprobante en los detalles del apartado.`;
+                                     `Una vez realizado el depósito, enviaré el comprobante.`;
                 
                 whatsappShare.href = `https://wa.me/?text=${encodeURIComponent(depositMessage)}`;
                 
@@ -1356,11 +1440,19 @@
             
             // Resetear formulario
             reservationForm.reset();
+            // Mantener solo un campo de lote
+            while (lotList.children.length > 1) {
+                lotList.removeChild(lotList.lastChild);
+            }
+            // Limpiar el primer campo de lote
+            document.querySelector('.lot-number').value = '';
+            
             reservationForm.style.display = 'block';
             verbalReceipt.style.display = 'none';
             depositReceipt.style.display = 'none';
             depositFields.style.display = 'none';
         });
+
     </script>
 </body>
 </html>
