@@ -1388,10 +1388,8 @@
                 // Configurar WhatsApp share para apartado verbal
                 const verbalMessage = `*Notificación de Apartado - OCEÁNICA*\n\n` +
                                      `Hola, para notificar que aparte los lotes ${lotNumbers.join(', ')} ` +
-                                     `a nombre ${fullName}`+` de vencerá el *${formatDateTime(deadline)}*\n\n` +
-                                     `Por favor acuda a nuestras oficinas para formalizar su apartado ` +
-                                     `antes de esta fecha y hora.\n\n` +
-                                     `Atentamente,\nNelva Bienes Raíces`;
+                                     `a nombre ${fullName}`+` de vencerá el *${formatDateTime(deadline)}*\n\n`
+                                    
                 
                 verbalWhatsappShare.href = `https://wa.me/?text=${encodeURIComponent(verbalMessage)}`;
                 
@@ -1423,7 +1421,7 @@
                                      `Nombre: Nelva Bienes Raíces S.A. de C.V.\n` +
                                      `Cuenta: 0123 4567 8910 1112\n` +
                                      `CLABE: 012 320 0123 4567 8910 11\n\n` +
-                                     `Una vez realizado el depósito, enviaré el comprobante.`;
+                                     `Una vez realizado el depósito, envía el comprobante.`;
                 
                 whatsappShare.href = `https://wa.me/?text=${encodeURIComponent(depositMessage)}`;
                 
