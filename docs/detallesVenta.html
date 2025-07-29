@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles de Venta | Nelva Bienes Raíces</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1e478a;
+            --primary-light: #6366f1;
+            --secondary-color: #398CA2;
+            --accent-color: #e1f3fd;
+            --text-color: #334155;
+            --text-light: #64748b;
+            --light-gray: #f8fafc;
+            --medium-gray: #e2e8f0;
+            --dark-gray: #94a3b8;
+            --success-color: #10b981;
+            --success-light: #a7f3d0;
+            --warning-color: #f59e0b;
+            --warning-light: #fde68a;
+            --danger-color: #ef4444;
+            --danger-light: #fee2e2;
+            --white: #ffffff;
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+            --rounded: 12px;
+            --rounded-sm: 8px;
+            --transition: all 0.2s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            color: var(--text-color);
+            background-color: var(--light-gray);
+            min-height: 100vh;
+            line-height: 1.5;
+        }
+
+        /* Navbar Desktop */
+        .navbar-desktop {
+            display: none;
+            background-color: var(--white);
+            box-shadow: var(--shadow);
+            padding: 0.75rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar-desktop-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo i {
+            font-size: 1.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.25rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-light);
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-links a.active {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--primary-color);
+            border-radius: 3px;
+        }
+
+        /* Navbar Mobile */
+        .navbar-mobile {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background-color: var(--white);
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 0.5rem 0;
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--dark-gray);
+            font-size: 0.7rem;
+            transition: var(--transition);
+            padding: 0.4rem;
+            border-radius: var(--rounded-sm);
+        }
+
+        .nav-item i {
+            font-size: 1.1rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .nav-item.active {
+            color: var(--primary-color);
+            background-color: var(--light-gray);
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.25rem 1rem;
+            padding-bottom: 80px; /* Espacio para el navbar mobile */
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-title i {
+            font-size: 1.5rem;
+        }
+
+        .page-subtitle {
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+
+        /* Tarjeta principal */
+        .sale-card {
+            background-color: var(--white);
+            border-radius: var(--rounded);
+            box-shadow: var(--shadow-md);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Encabezado */
+        .sale-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .sale-title {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .sale-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .badge-payments {
+            background-color: var(--success-light);
+            color: var(--success-color);
+        }
+
+        .badge-delayed {
+            background-color: var(--warning-light);
+            color: var(--warning-color);
+        }
+
+        .badge-completed {
+            background-color: var(--success-color);
+            color: var(--white);
+        }
+
+        .badge-cancelled {
+            background-color: var(--danger-light);
+            color: var(--danger-color);
+        }
+
+        /* Secciones */
+        .section {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        /* Grid de detalles */
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .detail-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .detail-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .detail-card {
+            background-color: var(--light-gray);
+            border-radius: var(--rounded-sm);
+            padding: 1.2rem;
+        }
+
+        .detail-label {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .detail-value {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        /* Comprobante */
+        .receipt-container {
+            margin-top: 1.5rem;
+        }
+
+        .receipt-preview {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: var(--rounded-sm);
+            box-shadow: var(--shadow);
+            margin-top: 1rem;
+        }
+
+        /* Botón de volver */
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            margin-top: 1rem;
+        }
+
+        /* Desktop Styles */
+        @media (min-width: 768px) {
+            .navbar-desktop {
+                display: block;
+            }
+
+            .navbar-mobile {
+                display: none;
+            }
+
+            .container {
+                padding: 2rem 2rem;
+                padding-bottom: 2rem;
+            }
+        }
+
+        /* Mobile Styles */
+        @media (max-width: 767px) {
+            .navbar-desktop {
+                display: none;
+            }
+
+            .navbar-mobile {
+                display: flex;
+            }
+
+            .container {
+                padding-bottom: 80px;
+            }
+        }
+
+        /* Modal para logout */
+        #logout-modal {
+            display: none;
+        }
+
+        .modal-overlay {
+            position: fixed; 
+            left: 0; 
+            top: 0; 
+            width: 100vw; 
+            height: 100vh;
+            background: rgba(30,71,138,0.18); 
+            z-index: 999;
+        }
+
+        .modal-content-logout {
+            position: fixed; 
+            left: 50%; 
+            top: 50%; 
+            transform: translate(-50%,-50%);
+            background: var(--white); 
+            border-radius: var(--rounded); 
+            box-shadow: var(--shadow-lg);
+            padding: 2rem 1.5rem; 
+            z-index: 1000; 
+            min-width: 300px; 
+            text-align: center;
+        }
+        
+        .modal-actions { 
+            margin-top: 1.5rem; 
+            display: flex; 
+            gap: 1rem; 
+            justify-content: center; 
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 0.6rem 1.2rem;
+            border-radius: var(--rounded-sm);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.85rem;
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--accent-color);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 0.6rem 1.2rem;
+            border-radius: var(--rounded-sm);
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.85rem;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+        }
+
+        /* Animaciones */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .sale-card {
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+
+
+        /* Estilos para las imágenes de INE */
+        .ine-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .ine-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--rounded-sm);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--medium-gray);
+            flex: 1 1 200px;
+        }
+
+        @media (max-width: 767px) {
+            .ine-container {
+                flex-direction: column;
+            }
+            
+            .ine-image {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar Desktop -->
+    <nav class="navbar-desktop">
+        <div class="navbar-desktop-container">
+            <div class="logo">
+                <i class="fas fa-home"></i>
+                <span>Nelva Bienes Raíces</span>
+            </div>
+            <div class="nav-links">
+                <a href="inicio.html"><i class="fas fa-home"></i> Inicio</a>
+                <a href="apartados.html"><i class="fas fa-calendar-check"></i> Apartados</a>
+                <a href="ventas.html" class="active"><i class="fas fa-history"></i> Ventas</a>
+                <a href="perfil.html"><i class="fas fa-user"></i> Perfil</a>
+                <a href="#" id="logout-btn-desktop"><i class="fas fa-sign-out-alt"></i> Salir</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">
+                <i class="fas fa-file-invoice-dollar"></i>
+                <span>Detalles de Venta</span>
+            </h1>
+            <p class="page-subtitle">Información completa de la transacción</p>
+        </div>
+
+        <!-- Tarjeta de venta -->
+        <div class="sale-card">
+            <div class="sale-header">
+                <h2 class="sale-title">Venta #VN-2024-00158</h2>
+                <span class="sale-badge" id="saleBadge">
+                    <i class="fas fa-check-circle"></i>
+                    <span>En pagos</span>
+                </span>
+            </div>
+
+            <!-- Sección de Lotes -->
+            <div class="section">
+                <h3 class="section-title">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <span>Información de los Lotes</span>
+                </h3>
+                
+                <div class="detail-grid">
+                    <div class="detail-card">
+                        <div class="detail-label">
+                            <i class="fas fa-hashtag"></i>
+                            <span>Número de lote(s)</span>
+                        </div>
+                        <p class="detail-value">Lote 12, Lote 15</p>
+                    </div>
+                    
+                    <div class="detail-card">
+                        <div class="detail-label">
+                            <i class="fas fa-layer-group"></i>
+                            <span>Manzana</span>
+                        </div>
+                        <p class="detail-value">Manzana 5</p>
+                    </div>
+                    
+                    <div class="detail-card">
+                        <div class="detail-label">
+                            <i class="fas fa-home"></i>
+                            <span>Fraccionamiento</span>
+                        </div>
+                        <p class="detail-value">OCEÁNICA</p>
+                    </div>
+                    
+                    <div class="detail-card">
+                        <div class="detail-label">
+                            <i class="fas fa-dollar-sign"></i>
+                            <span>Precio total</span>
+                        </div>
+                        <p class="detail-value">$450,000.00 MXN</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección del Cliente -->
+            <div class="section">
+                <h3 class="section-title">
+                    <i class="fas fa-user"></i>
+                    <span>Datos del Cliente</span>
+                </h3>
+                
+                <div class="detail-grid">
+                    <div class="detail-card">
+                        <div class="detail-label">
+                            <i class="fas fa-id-card"></i>
+                            <span>Nombre completo</span>
+                        </div>
+                        <p class="detail-value">Juan Pérez Martínez</p>
+                    </div>
+                    
+                    <div class="detail-card">
+                        <div class="detail-label">
+                            <i class="fas fa-birthday-cake"></i>
+                            <span>Edad</span>
+                        </div>
+                        <p class="detail-value">42 años</p>
+                    </div>
+                    
+                    <div class="detail-card">
+                        <div class="detail-label">
+                            <i class="fas fa-heart"></i>
+                            <span>Estado civil</span>
+                        </div>
+                        <p class="detail-value">Casado</p>
+                    </div>
+                    
+                    <div class="detail-card">
+                        <div class="detail-label">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Lugar de origen</span>
+                        </div>
+                        <p class="detail-value">Oaxaca, México</p>
+                    </div>
+                    
+                    <div class="detail-card">
+                        <div class="detail-label">
+                            <i class="fas fa-briefcase"></i>
+                            <span>Ocupación</span>
+                        </div>
+                        <p class="detail-value">Arquitecto</p>
+                    </div>
+                    
+                    <div class="detail-card">
+                        <div class="detail-label">
+                            <i class="fas fa-id-badge"></i>
+                            <span>Clave de elector (INE)</span>
+                        </div>
+                        <p class="detail-value">PPEM920101HDFRRN01</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección de INEs -->
+            <div class="section">
+                <h3 class="section-title">
+                    <i class="fas fa-id-card"></i>
+                    <span>Identificaciones Oficiales</span>
+                </h3>
+                
+                <div class="detail-grid">
+                    <!-- INE del Cliente -->
+                    <div class="detail-card">
+                        <div class="detail-label">
+                            <i class="fas fa-user"></i>
+                            <span>INE del Cliente</span>
+                        </div>
+                        <div class="ine-container">
+                            <img src="https://via.placeholder.com/600x400?text=INE+Cliente+Frontal" alt="INE Cliente Frontal" class="ine-image">
+                            <img src="https://via.placeholder.com/600x400?text=INE+Cliente+Reverso" alt="INE Cliente Reverso" class="ine-image">
+                        </div>
+                    </div>
+                    
+                    <!-- INE del Beneficiario -->
+                    <div class="detail-card">
+                        <div class="detail-label">
+                            <i class="fas fa-user-tie"></i>
+                            <span>INE del Beneficiario</span>
+                        </div>
+                        <div class="ine-container">
+                            <img src="https://via.placeholder.com/600x400?text=INE+Beneficiario+Frontal" alt="INE Beneficiario Frontal" class="ine-image">
+                            <img src="https://via.placeholder.com/600x400?text=INE+Beneficiario+Reverso" alt="INE Beneficiario Reverso" class="ine-image">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Contacto del Cliente -->
+            <div class="section">
+                <h3 class="section-title">
+                    <i class="fas fa-address-book"></i>
+                    <span>Contacto del Cliente</span>
+                </h3>
+                
+                <div class="detail-grid">
+                    <div class="detail-card">
+                        <div class="detail-label">
+                            <i class="fas fa-phone"></i>
+                            <span>Teléfono</span>
+                        </div>
+                        <p class="detail-value">+52 951 123 4567</p>
+                    </div>
+                    
+                    <div class="detail-card">
+                        <div class="detail-label">
+                            <i class="fas fa-envelope"></i>
+                            <span>Correo electrónico</span>
+                        </div>
+                        <p class="detail-value">juan.perez@example.com</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dirección del Cliente -->
+            <div class="section">
+                <h3 class="section-title">
+                    <i class="fas fa-map"></i>
+                    <span>Dirección del Cliente</span>
+                </h3>
+                
+                <div class="detail-grid">
+                    <div class="detail-card">
+                        <div class="detail-label">
+                            <i class="fas fa-globe-americas"></i>
+                            <span>Nacionalidad</span>
+                        </div>
+                        <p class="detail-value">Mexicana</p>
+                    </div>
+                    
+                    <div class="detail-card">
+                        <div class="detail-label">
+                            <i class="fas fa-flag"></i>
+                            <span>Estado</span>
+                        </div>
+                        <p class="detail-value">Oaxaca</p>
+                    </div>
+                    
+                    <div class="detail-card">
+                        <div class="detail-label">
+                            <i class="fas fa-city"></i>
+                            <span>Municipio</span>
+                        </div>
+                        <p class="detail-value">Santa María Tonameca</p>
+                    </div>
+                    
+                    <div class="detail-card">
+                        <div class="detail-label">
+                            <i class="fas fa-home"></i>
+                            <span>Localidad</span>
+                        </div>
+                        <p class="detail-value">Playa Guapinole</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Información de Pago -->
+            <div class="section">
+                <h3 class="section-title">
+                    <i class="fas fa-money-bill-wave"></i>
+                    <span>Información de Pago</span>
+                </h3>
+                
+                <div class="detail-grid">
+                    <div class="detail-card">
+                        <div class="detail-label">
+                            <i class="fas fa-hand-holding-usd"></i>
+                            <span>Monto del enganche</span>
+                        </div>
+                        <p class="detail-value">$90,000.00 MXN</p>
+                    </div>
+                    
+                    <div class="detail-card">
+                        <div class="detail-label">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>Plazo de financiamiento</span>
+                        </div>
+                        <p class="detail-value">24 meses</p>
+                    </div>
+                    
+                    <div class="detail-card">
+                        <div class="detail-label">
+                            <i class="fas fa-business-time"></i>
+                            <span>Modalidad de pago</span>
+                        </div>
+                        <p class="detail-value">Crédito</p>
+                    </div>
+                    
+                    <div class="detail-card">
+                        <div class="detail-label">
+                            <i class="fas fa-money-check-alt"></i>
+                            <span>Forma de pago</span>
+                        </div>
+                        <p class="detail-value">Transferencia bancaria</p>
+                    </div>
+                    
+                    <div class="detail-card">
+                        <div class="detail-label">
+                            <i class="fas fa-calendar-day"></i>
+                            <span>Fecha primer pago</span>
+                        </div>
+                        <p class="detail-value">15/04/2024</p>
+                    </div>
+                    
+                    <div class="detail-card">
+                        <div class="detail-label">
+                            <i class="fas fa-calendar-check"></i>
+                            <span>Día de pago mensual</span>
+                        </div>
+                        <p class="detail-value">15 de cada mes</p>
+                    </div>
+                </div>
+                
+                <!-- Comprobante de enganche -->
+                <div class="receipt-container">
+                    <div class="detail-label">
+                        <i class="fas fa-receipt"></i>
+                        <span>Comprobante de enganche</span>
+                    </div>
+                    <img src="https://via.placeholder.com/600x300?text=Comprobante+de+Pago" alt="Comprobante de enganche" class="receipt-preview">
+                </div>
+            </div>
+
+            <!-- Beneficiario -->
+            <div class="section">
+                <h3 class="section-title">
+                    <i class="fas fa-user-tie"></i>
+                    <span>Datos del Beneficiario</span>
+                </h3>
+                
+                <div class="detail-grid">
+                    <div class="detail-card">
+                        <div class="detail-label">
+                            <i class="fas fa-user"></i>
+                            <span>Nombre completo</span>
+                        </div>
+                        <p class="detail-value">María García López</p>
+                    </div>
+                    
+                    <div class="detail-card">
+                        <div class="detail-label">
+                            <i class="fas fa-phone"></i>
+                            <span>Teléfono</span>
+                        </div>
+                        <p class="detail-value">+52 951 987 6543</p>
+                    </div>
+                    
+                    <div class="detail-card">
+                        <div class="detail-label">
+                            <i class="fas fa-id-badge"></i>
+                            <span>INE (México)</span>
+                        </div>
+                        <p class="detail-value">GALM750505MDFRPL02</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Observaciones -->
+            <div class="section">
+                <h3 class="section-title">
+                    <i class="fas fa-clipboard-list"></i>
+                    <span>Observaciones</span>
+                </h3>
+                
+                <div class="detail-card">
+                    <p>El cliente solicitó cambiar el día de pago al 20 de cada mes a partir del segundo pago. Se acordó con el departamento de cobranza.</p>
+                </div>
+            </div>
+        </div>
+
+        <a href="ventas.html" class="btn-back">
+            <i class="fas fa-arrow-left"></i>
+            <span>Volver a ventas</span>
+        </a>
+    </div>
+
+    <!-- Navbar Mobile -->
+    <nav class="navbar-mobile">
+        <a href="inicio.html" class="nav-item">
+            <i class="fas fa-home"></i>
+            <span>Inicio</span>
+        </a>
+        <a href="apartados.html" class="nav-item">
+            <i class="fas fa-calendar-check"></i>
+            <span>Apartados</span>
+        </a>
+        <a href="ventas.html" class="nav-item active">
+            <i class="fas fa-history"></i>
+            <span>Ventas</span>
+        </a>
+        <a href="perfil.html" class="nav-item">
+            <i class="fas fa-user"></i>
+            <span>Perfil</span>
+        </a>
+        <a href="#" class="nav-item" id="logout-btn-mobile">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Salir</span>
+        </a>
+    </nav>
+
+    <!-- Modal para logout -->
+    <div id="logout-modal" style="display:none;">
+        <div class="modal-overlay"></div>
+        <div class="modal-content-logout">
+            <h2>¿Cerrar sesión?</h2>
+            <p>¿Estás seguro que deseas salir de tu cuenta?</p>
+            <div class="modal-actions">
+                <button id="confirm-logout" class="btn btn-primary">Sí, salir</button>
+                <button id="cancel-logout" class="btn btn-outline">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Datos de la venta (simulados)
+        const saleData = {
+            id: "VN-2024-00158",
+            status: "payments", // "payments", "delayed", "completed", "cancelled"
+            lots: ["Lote 12", "Lote 15"],
+            block: "Manzana 5",
+            development: "OCEÁNICA",
+            totalPrice: 450000,
+            client: {
+                name: "Juan Pérez Martínez",
+                age: 42,
+                maritalStatus: "Casado",
+                origin: "Oaxaca, México",
+                occupation: "Arquitecto",
+                ine: "PPEM920101HDFRRN01",
+                phone: "+52 951 123 4567",
+                email: "juan.perez@example.com",
+                address: {
+                    nationality: "Mexicana",
+                    state: "Oaxaca",
+                    municipality: "Santa María Tonameca",
+                    locality: "Playa Guapinole"
+                }
+            },
+            payment: {
+                downPayment: 90000,
+                financingTerm: "24 meses",
+                paymentMode: "Crédito",
+                paymentMethod: "Transferencia bancaria",
+                firstPaymentDate: "15/04/2024",
+                paymentDay: 15,
+                receipt: "https://via.placeholder.com/600x300?text=Comprobante+de+Pago"
+            },
+            beneficiary: {
+                name: "María García López",
+                phone: "+52 951 987 6543",
+                ine: "GALM750505MDFRPL02"
+            },
+            observations: "El cliente solicitó cambiar el día de pago al 20 de cada mes a partir del segundo pago. Se acordó con el departamento de cobranza."
+        };
+
+        // Configurar estado de la venta
+        function setStatus(status) {
+            const badge = document.getElementById('saleBadge');
+            let icon, text, badgeClass;
+            
+            switch(status) {
+                case 'payments':
+                    icon = 'fa-check-circle';
+                    text = 'En pagos';
+                    badgeClass = 'badge-payments';
+                    break;
+                case 'delayed':
+                    icon = 'fa-exclamation-circle';
+                    text = 'Retraso de pagos';
+                    badgeClass = 'badge-delayed';
+                    break;
+                case 'completed':
+                    icon = 'fa-check-double';
+                    text = 'Liquidada';
+                    badgeClass = 'badge-completed';
+                    break;
+                case 'cancelled':
+                    icon = 'fa-times-circle';
+                    text = 'Cancelada';
+                    badgeClass = 'badge-cancelled';
+                    break;
+            }
+            
+            badge.innerHTML = `<i class="fas ${icon}"></i><span>${text}</span>`;
+            badge.className = `sale-badge ${badgeClass}`;
+        }
+
+        // Inicializar estado
+        setStatus(saleData.status);
+
+        // Logout functionality
+        const logoutBtns = [document.getElementById('logout-btn-desktop'), document.getElementById('logout-btn-mobile')];
+        const modal = document.getElementById('logout-modal');
+        const confirmBtn = document.getElementById('confirm-logout');
+        const cancelBtn = document.getElementById('cancel-logout');
+
+        logoutBtns.forEach(btn => {
+            if (btn) btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                modal.style.display = 'block';
+            });
+        });
+
+        cancelBtn.addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+
+        confirmBtn.addEventListener('click', function() {
+            window.location.href = 'index.html';
+        });
+
+        modal.querySelector('.modal-overlay').addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+    </script>
+</body>
+</html>
+
