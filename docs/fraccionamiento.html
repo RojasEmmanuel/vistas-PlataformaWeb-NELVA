@@ -880,7 +880,7 @@
                 <i class="fas fa-handshake"></i> Apartar Lote
             </button>
             <button class="btn btn-outline btn-lg">
-                <i class="fas fa-calculator"></i> Calcular Precios
+                <i class="fas fa-calculator"></i> Calcular Costo
             </button>
         </div>
 
@@ -1109,6 +1109,78 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal de Cálculo de Costo -->
+    <div class="modal" id="calculationModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeCalculationModal">&times;</button>
+            <h2 class="modal-title">Calcular Costo del Lote</h2>
+            
+            <form id="calculationForm">
+                <div class="form-group">
+                    <label for="lotNumber" class="form-label">Número de Lote</label>
+                    <input type="text" id="lotNumber" class="form-control" required placeholder="Ej. 12, 5, etc.">
+                </div>
+                
+                <div class="form-group">
+                    <button type="button" class="btn btn-primary" id="calculateBtn" style="width: 100%;">
+                        <i class="fas fa-calculator"></i> Calcular
+                    </button>
+                </div>
+                
+                <div id="lotDetails" style="display: none;">
+                    <div class="info-section">
+                        <h3 class="info-title">
+                            <i class="fas fa-info-circle"></i>
+                            <span>Detalles del Lote</span>
+                        </h3>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <div class="info-label">Manzana</div>
+                                <div class="info-value" id="lotBlock">-</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Área total</div>
+                                <div class="info-value" id="lotArea">- m²</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Norte</div>
+                                <div class="info-value" id="lotNorth">- m</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Sur</div>
+                                <div class="info-value" id="lotSouth">- m</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Oriente</div>
+                                <div class="info-value" id="lotEast">- m</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Poniente</div>
+                                <div class="info-value" id="lotWest">- m</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="info-section">
+                        <h3 class="info-title">
+                            <i class="fas fa-dollar-sign"></i>
+                            <span>Cálculo de Costo</span>
+                        </h3>
+                        <div class="info-item">
+                            <div class="info-label">Precio por m²</div>
+                            <div class="info-value">$1,200 MXN</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Costo total</div>
+                            <div class="info-value highlight" id="totalCost">$0 MXN</div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
 
     <!-- Navbar Mobile -->
     <nav class="navbar-mobile">
@@ -1449,6 +1521,110 @@
             verbalReceipt.style.display = 'none';
             depositReceipt.style.display = 'none';
             depositFields.style.display = 'none';
+        });
+
+
+
+        // Modal de cálculo de costo
+        const calculationModal = document.getElementById('calculationModal');
+        const closeCalculationModal = document.getElementById('closeCalculationModal');
+        const calculateBtn = document.getElementById('calculateBtn');
+        const lotDetails = document.getElementById('lotDetails');
+
+        // Base de datos simulada de lotes
+        const lotsDatabase = {
+            '5': {
+                block: 'A',
+                area: 350,
+                north: 20,
+                south: 17.5,
+                east: 20,
+                west: 17.5,
+                pricePerM2: 1200
+            },
+            '12': {
+                block: 'B',
+                area: 400,
+                north: 25,
+                south: 16,
+                east: 20,
+                west: 20,
+                pricePerM2: 1200
+            },
+            '18': {
+                block: 'C',
+                area: 380,
+                north: 19,
+                south: 20,
+                east: 19,
+                west: 20,
+                pricePerM2: 1200
+            },
+            '22': {
+                block: 'D',
+                area: 420,
+                north: 21,
+                south: 20,
+                east: 21,
+                west: 20,
+                pricePerM2: 1200
+            }
+        };
+
+        // Abrir modal de cálculo
+        document.querySelector('.action-buttons .btn-outline').addEventListener('click', function() {
+            calculationModal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            // Resetear el formulario al abrir
+            document.getElementById('calculationForm').reset();
+            lotDetails.style.display = 'none';
+        });
+
+        // Cerrar modal de cálculo
+        closeCalculationModal.addEventListener('click', function() {
+            calculationModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+
+        // Cerrar al hacer clic fuera del modal
+        calculationModal.addEventListener('click', function(e) {
+            if (e.target === calculationModal) {
+                calculationModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Calcular costo del lote
+        calculateBtn.addEventListener('click', function() {
+            const lotNumber = document.getElementById('lotNumber').value.trim();
+            
+            if (!lotNumber) {
+                alert('Por favor ingrese un número de lote');
+                return;
+            }
+            
+            // Buscar lote en la base de datos simulada
+            const lot = lotsDatabase[lotNumber];
+            
+            if (!lot) {
+                alert('Lote no encontrado. Por favor verifique el número.');
+                return;
+            }
+            
+            // Mostrar detalles del lote
+            document.getElementById('lotBlock').textContent = lot.block;
+            document.getElementById('lotArea').textContent = `${lot.area} m²`;
+            document.getElementById('lotNorth').textContent = `${lot.north} m`;
+            document.getElementById('lotSouth').textContent = `${lot.south} m`;
+            document.getElementById('lotEast').textContent = `${lot.east} m`;
+            document.getElementById('lotWest').textContent = `${lot.west} m`;
+            
+            // Calcular costo total (área × precio por m²)
+            const totalCost = lot.area * lot.pricePerM2;
+            document.getElementById('totalCost').textContent = `$${totalCost.toLocaleString('es-MX')} MXN`;
+            
+            // Mostrar sección de detalles
+            lotDetails.style.display = 'block';
         });
 
     </script>
