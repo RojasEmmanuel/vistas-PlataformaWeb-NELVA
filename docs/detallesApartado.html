@@ -9,7 +9,7 @@
         :root {
             --primary-color: #1e478a;
             --primary-light: #6366f1;
-            --secondary-color: #398CA2;
+            --secondary-color: #3d86df;
             --accent-color: #e1f3fd;
             --text-color: #334155;
             --text-light: #64748b;
@@ -552,9 +552,193 @@
         .btn-primary:hover {
             background-color: var(--secondary-color);
         }
+
+        /* Nuevos estilos para el selector de archivos mejorado */
+        .file-actions {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .btn-change-file {
+            background-color: var(--medium-gray);
+            color: var(--text-color);
+            padding: 0.5rem 1rem;
+            border-radius: var(--rounded-sm);
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+        }
+
+        .btn-change-file:hover {
+            background-color: var(--dark-gray);
+            color: var(--white);
+        }
+
+        /* Estilos para el formulario de contrato */
+        .contract-form-container {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--medium-gray);
+            display: none;
+        }
+
+        .contract-form {
+            background-color: var(--light-gray);
+            border-radius: var(--rounded-sm);
+            padding: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--medium-gray);
+            border-radius: var(--rounded-sm);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+
+        .btn-contract {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: var(--rounded-sm);
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            width: 100%;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .btn-contract:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .btn-generate-contract {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: var(--rounded-sm);
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            margin-top: 1.5rem;
+        }
+
+        .btn-generate-contract:hover {
+            background-color: var(--secondary-color);
+        }
+
+        /* Nuevos estilos para el cronómetro fijo */
+        .fixed-time-counter {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 0.5rem 1rem;
+            border-radius: var(--rounded-sm);
+            font-weight: 500;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            z-index: 90;
+            box-shadow: var(--shadow);
+            background-color: var(--white);
+        }
+
+        /* Ajustes para navbar desktop con cronómetro fijo */
+        .navbar-desktop {
+            z-index: 100; /* Asegura que navbar esté sobre el cronómetro */
+        }
+
+        /* Ajustes para móvil */
+        @media (max-width: 767px) {
+            .fixed-time-counter {
+                top: 10px;
+                right: 10px;
+                font-size: 0.8rem;
+                padding: 0.4rem 0.8rem;
+            }
+        }
+
+
+
+        /* Estilos para el cronómetro fijo (asegúrate que estén presentes) */
+        .fixed-time-counter {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 0.5rem 1rem;
+            border-radius: var(--rounded-sm);
+            font-weight: 500;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            z-index: 90;
+            box-shadow: var(--shadow);
+            background-color: var(--white);
+        }
+
+        /* Clases de color para el cronómetro */
+        .fixed-time-normal {
+            background-color: var(--success-light);
+            color: var(--success-color);
+            border: 1px solid var(--success-color);
+        }
+        .fixed-time-warning {
+            background-color: var(--warning-light);
+            color: var(--warning-color);
+            border: 1px solid var(--warning-color);
+        }
+        .fixed-time-danger {
+            background-color: var(--danger-light);
+            color: var(--danger-color);
+            border: 1px solid var(--danger-color);
+        }
+
     </style>
 </head>
 <body>
+    
+    <!-- CRONOMETRO PEQUEÑO Y FIJADO -->
+    <div class="fixed-time-counter fixed-time-normal" id="fixedTimeCounter">
+        <i class="fas fa-clock"></i>
+        <span id="fixedTimeRemaining">19h 45m</span>
+    </div>
+
+
     <!-- Navbar Desktop -->
     <nav class="navbar-desktop">
         <div class="navbar-desktop-container">
@@ -673,10 +857,16 @@
                 <div class="file-preview" id="filePreview" style="display: none;">
                     <img id="previewImage" src="" alt="Vista previa del comprobante">
                     <a href="#" id="fileLink" target="_blank"></a>
-                    <button class="btn-save" id="saveBtn">
-                        <i class="fas fa-check-circle"></i>
-                        <span>Enviar comprobante</span>
-                    </button>
+                    <div class="file-actions">
+                        <button class="btn-change-file" id="changeFileBtn">
+                            <i class="fas fa-exchange-alt"></i>
+                            <span>Cambiar archivo</span>
+                        </button>
+                        <button class="btn-save" id="saveBtn">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Enviar comprobante</span>
+                        </button>
+                    </div>
                 </div>
                 
                 <!-- Estado y observaciones -->
@@ -693,6 +883,52 @@
                         </h4>
                         <p id="observationsText"></p>
                     </div>
+                </div>
+            </div>
+
+            <!-- Botón para generar contrato -->
+            <button class="btn-generate-contract" id="generateContractBtn" style="display: none;">
+                <i class="fas fa-file-contract"></i>
+                <span>Generar Contrato</span>
+            </button>
+
+            <!-- Formulario para contrato -->
+            <div class="contract-form-container" id="contractFormContainer">
+                <h3 class="section-title">
+                    <i class="fas fa-file-signature"></i>
+                    <span>Datos para el contrato</span>
+                </h3>
+                <div class="contract-form">
+                    <div class="form-group">
+                        <label for="contractName" class="form-label">Nombre completo</label>
+                        <input type="text" id="contractName" class="form-control" placeholder="Nombre completo como aparecerá en el contrato">
+                    </div>
+                    <div class="form-group">
+                        <label for="contractAddress" class="form-label">Dirección</label>
+                        <input type="text" id="contractAddress" class="form-control" placeholder="Calle, número, colonia, ciudad">
+                    </div>
+                    <div class="form-group">
+                        <label for="contractPhone" class="form-label">Teléfono</label>
+                        <input type="tel" id="contractPhone" class="form-control" placeholder="Número de teléfono">
+                    </div>
+                    <div class="form-group">
+                        <label for="contractEmail" class="form-label">Correo electrónico</label>
+                        <input type="email" id="contractEmail" class="form-control" placeholder="Correo electrónico">
+                    </div>
+                    <div class="form-group">
+                        <label for="contractPayment" class="form-label">Forma de pago</label>
+                        <select id="contractPayment" class="form-control">
+                            <option value="">Seleccione una opción</option>
+                            <option value="transferencia">Transferencia bancaria</option>
+                            <option value="efectivo">Efectivo</option>
+                            <option value="cheque">Cheque</option>
+                            <option value="tarjeta">Tarjeta de crédito/débito</option>
+                        </select>
+                    </div>
+                    <button class="btn-contract" id="submitContractBtn">
+                        <i class="fas fa-file-download"></i>
+                        <span>Generar documento</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -751,15 +987,38 @@
             createdAt: new Date("2024-03-15T14:30:00"),
             expiresAt: new Date("2024-03-17T14:30:00"),
             amount: 15000,
-            status: "pending",
-            observations: "El comprobante no muestra claramente el nombre del depositante. Por favor verifique y vuelva a enviar."
+            status: "approved", // "pending", "approved", "rejected"
+            observations: "", // si hay commentarios u observaciones referente al ticket
         };
+
+        // Elementos del DOM
+        const reservationBadge = document.getElementById('reservationBadge');
+        const depositSection = document.getElementById('depositSection');
+        const statusBadge = document.getElementById('statusBadge');
+        const observationsCard = document.getElementById('observationsCard');
+        const observationsText = document.getElementById('observationsText');
+        const timeCounter = document.getElementById('timeCounter');
+        const timeRemaining = document.getElementById('timeRemaining');
+        const fixedTimeCounter = document.getElementById('fixedTimeCounter');
+        const fixedTimeRemaining = document.getElementById('fixedTimeRemaining');
+        const fileInput = document.getElementById('fileInput');
+        const uploadCard = document.getElementById('uploadCard');
+        const filePreview = document.getElementById('filePreview');
+        const previewImage = document.getElementById('previewImage');
+        const fileLink = document.getElementById('fileLink');
+        const saveBtn = document.getElementById('saveBtn');
+        const changeFileBtn = document.getElementById('changeFileBtn');
+        const generateContractBtn = document.getElementById('generateContractBtn');
+        const contractFormContainer = document.getElementById('contractFormContainer');
+        const submitContractBtn = document.getElementById('submitContractBtn');
 
         // Configurar según tipo de apartado
         if (reservationData.type === 'verbal') {
             reservationBadge.innerHTML = '<i class="fas fa-handshake"></i><span>De palabra</span>';
             reservationBadge.className = 'reservation-badge badge-verbal';
             depositSection.style.display = 'none';
+            // Mostrar botón de contrato si es apartado de palabra
+            generateContractBtn.style.display = 'flex';
         }
 
         // Configurar estado
@@ -770,16 +1029,20 @@
                     icon = 'fa-hourglass-half';
                     text = 'Pendiente de revisión';
                     statusBadge.className = 'status-badge badge-pending';
+                    generateContractBtn.style.display = 'none';
                     break;
                 case 'approved':
                     icon = 'fa-check-circle';
                     text = 'Aprobado';
                     statusBadge.className = 'status-badge badge-approved';
+                    // Mostrar botón de contrato si está aprobado
+                    generateContractBtn.style.display = 'flex';
                     break;
                 case 'rejected':
                     icon = 'fa-times-circle';
                     text = 'Rechazado';
                     statusBadge.className = 'status-badge badge-rejected';
+                    generateContractBtn.style.display = 'none';
                     break;
             }
             statusBadge.innerHTML = `<i class="fas ${icon}"></i><span>${text}</span>`;
@@ -795,7 +1058,7 @@
         // Inicializar estado
         setStatus(reservationData.status, reservationData.observations);
 
-        // Contador de tiempo
+            // Contador de tiempo
         function updateTimer() {
             const now = new Date();
             const endTime = new Date(reservationData.expiresAt);
@@ -803,26 +1066,41 @@
             
             if (diff <= 0) {
                 timeRemaining.innerHTML = 'Tiempo agotado';
+                fixedTimeRemaining.innerHTML = '0h 0m';
                 timeCounter.className = 'time-counter time-danger';
+                fixedTimeCounter.className = 'fixed-time-counter fixed-time-danger';
                 return;
             }
             
             const hours = Math.floor(diff / (1000 * 60 * 60));
             const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             
+            // Actualizar ambos contadores
             timeRemaining.innerHTML = `${hours} horas ${minutes} minutos`;
+            fixedTimeRemaining.innerHTML = `${hours}h ${minutes}m`;
             
+            // Establecer clase según tiempo restante
+            let timeClass, fixedTimeClass;
             if (hours < 2) {
-                timeCounter.className = 'time-counter time-danger';
+                timeClass = 'time-danger';
+                fixedTimeClass = 'fixed-time-danger';
             } else if (hours < 10) {
-                timeCounter.className = 'time-counter time-warning';
+                timeClass = 'time-warning';
+                fixedTimeClass = 'fixed-time-warning';
             } else {
-                timeCounter.className = 'time-counter time-normal';
+                timeClass = 'time-normal';
+                fixedTimeClass = 'fixed-time-normal';
             }
+            
+            timeCounter.className = `time-counter ${timeClass}`;
+            fixedTimeCounter.className = `fixed-time-counter ${fixedTimeClass}`;
         }
 
-        updateTimer();
-        setInterval(updateTimer, 60000);
+        // Asegúrate de llamar a la función al cargar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            updateTimer();
+            setInterval(updateTimer, 60000);
+        });
 
         // Manejar subida de archivos
         fileInput.addEventListener('change', function(e) {
@@ -846,6 +1124,13 @@
             }
         });
 
+        // Botón para cambiar archivo
+        changeFileBtn.addEventListener('click', function() {
+            filePreview.style.display = 'none';
+            uploadCard.style.display = 'block';
+            fileInput.value = ''; // Limpiar el input file
+        });
+
         // Botón de guardar
         saveBtn.addEventListener('click', function() {
             // Simular envío al servidor
@@ -858,6 +1143,37 @@
                 saveBtn.innerHTML = '<i class="fas fa-check-circle"></i><span>Enviar comprobante</span>';
                 saveBtn.disabled = false;
             }, 1500);
+        });
+
+        // Botón para generar contrato
+        generateContractBtn.addEventListener('click', function() {
+            contractFormContainer.style.display = contractFormContainer.style.display === 'block' ? 'none' : 'block';
+        });
+
+        // Botón para enviar formulario de contrato
+        submitContractBtn.addEventListener('click', function() {
+            // Validar formulario
+            const name = document.getElementById('contractName').value;
+            const address = document.getElementById('contractAddress').value;
+            const phone = document.getElementById('contractPhone').value;
+            const email = document.getElementById('contractEmail').value;
+            const payment = document.getElementById('contractPayment').value;
+            
+            if (!name || !address || !phone || !email || !payment) {
+                alert('Por favor complete todos los campos del formulario');
+                return;
+            }
+            
+            // Simular generación de contrato
+            submitContractBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>Generando documento...</span>';
+            submitContractBtn.disabled = true;
+            
+            setTimeout(() => {
+                alert('Contrato generado exitosamente. Se ha enviado una copia a su correo electrónico.');
+                submitContractBtn.innerHTML = '<i class="fas fa-file-download"></i><span>Generar documento</span>';
+                submitContractBtn.disabled = false;
+                contractFormContainer.style.display = 'none';
+            }, 2000);
         });
 
         // Logout functionality
