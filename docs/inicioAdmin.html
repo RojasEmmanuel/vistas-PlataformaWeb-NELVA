@@ -3,145 +3,672 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bienes Raíces - Gestión de Fraccionamientos</title>
+    <title>Fraccionamientos | Inmobiliaria</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #3498db;
-            --accent-color: #e74c3c;
-            --light-color: #ecf0f1;
-            --dark-color: #2c3e50;
-            --success-color: #27ae60;
-            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --primary-color: #1e478a;
+            --primary-light: #6366f1;
+            --secondary-color: #3d86df;
+            --accent-color: #e1f3fd;
+            --text-color: #334155;
+            --text-light: #64748b;
+            --light-gray: #f8fafc;
+            --medium-gray: #e2e8f0;
+            --dark-gray: #94a3b8;
+            --success-color: #10b981;
+            --success-light: #a7f3d0;
+            --warning-color: #f59e0b;
+            --warning-light: #fde68a;
+            --white: #ffffff;
+            --dark-bg: #1e293b;
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --rounded: 12px;
+            --rounded-sm: 8px;
+            --blue-accent: #3b82f6;
+            --transition: all 0.2s ease;
         }
-        
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         }
-        
+
         body {
-            background-color: #f5f7f9;
-            color: #333;
-            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--light-gray);
+            min-height: 100vh;
+            padding-bottom: 80px;
+            line-height: 1.5;
         }
-        
-        /* Navbar para desktop */
-        .navbar {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 1rem 2rem;
+
+        /* Navbar Desktop */
+        .navbar-desktop {
+            display: none;
+            background-color: var(--white);
+            box-shadow: var(--shadow);
+            padding: 0.75rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar-desktop-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: var(--shadow);
+            max-width: 1200px;
+            margin: 0 auto;
         }
-        
+
         .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-color);
             display: flex;
             align-items: center;
+            gap: 0.5rem;
         }
-        
+
         .logo i {
-            margin-right: 10px;
-            color: var(--secondary-color);
+            font-size: 1.5rem;
         }
-        
+
         .nav-links {
             display: flex;
-            list-style: none;
+            gap: 1.25rem;
         }
-        
-        .nav-links li {
-            margin-left: 1.5rem;
-        }
-        
+
         .nav-links a {
+            text-decoration: none;
+            color: var(--text-light);
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-links a.active {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--primary-color);
+            border-radius: 3px;
+        }
+
+        /* Navbar para las opciones requeridas */
+        .navbar-options {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.8rem 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .navbar-options-container {
+            display: flex;
+            justify-content: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .options-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .options-links a {
             color: white;
             text-decoration: none;
-            padding: 0.5rem;
-            border-radius: 4px;
-            transition: background-color 0.3s;
+            padding: 0.5rem 1rem;
+            border-radius: var(--rounded-sm);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
-        
-        .nav-links a:hover {
+
+        .options-links a:hover {
             background-color: rgba(255, 255, 255, 0.1);
         }
-        
-        /* Navbar móvil */
-        .mobile-navbar {
-            display: none;
-            background-color: var(--primary-color);
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            padding: 0.8rem;
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
-        }
-        
-        .mobile-nav-links {
+
+        /* Navbar Mobile */
+        .navbar-mobile {
             display: flex;
             justify-content: space-around;
-            list-style: none;
+            align-items: center;
+            background-color: var(--white);
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 0.5rem 0;
+            z-index: 100;
         }
-        
-        .mobile-nav-links a {
-            color: white;
-            text-decoration: none;
+
+        .nav-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            font-size: 0.8rem;
+            text-decoration: none;
+            color: var(--dark-gray);
+            font-size: 0.7rem;
+            transition: var(--transition);
+            padding: 0.4rem;
+            border-radius: var(--rounded-sm);
         }
-        
-        .mobile-nav-links i {
-            font-size: 1.2rem;
-            margin-bottom: 0.3rem;
+
+        .nav-item i {
+            font-size: 1.1rem;
+            margin-bottom: 0.2rem;
         }
-        
-        /* Contenido principal */
+
+        .nav-item.active {
+            color: var(--primary-color);
+            background-color: var(--light-gray);
+        }
+
+        /* Main Content */
         .container {
             max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 1rem;
+            margin: 0 auto;
+            padding: 1.25rem 1rem;
         }
-        
-        .header {
+
+        .page-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.25rem;
+            color: var(--text-color);
+            font-weight: 700;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 2rem;
+            gap: 0.5rem;
         }
-        
-        .btn-primary {
-            background-color: var(--secondary-color);
-            color: white;
+
+        .page-title i {
+            color: var(--primary-color);
+            font-size: 1.3rem;
+        }
+
+        /* Stats Cards */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.8rem;
+            margin-bottom:2rem;
+        }
+
+        .stat-card {
+            background-color: var(--white);
+            border-radius: var(--rounded);
+            padding: 1.25rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border-top: 4px solid transparent;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .stat-card-title {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-bottom: 0.4rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .stat-card-title i {
+            font-size: 0.9rem;
+        }
+
+        .stat-card-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+        }
+
+        .stat-card-description {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        .total {
+            border-top-color: var(--primary-color);
+        }
+
+        .available {
+            border-top-color: var(--success-color);
+        }
+
+        .reserved {
+            border-top-color: var(--warning-color);
+        }
+
+        .sold {
+            border-top-color: var(--blue-accent);
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            width: 100%;
+            height: 6px;
+            background-color: var(--medium-gray);
+            border-radius: 3px;
+            margin-top: 0.4rem;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            border-radius: 3px;
+        }
+
+        .progress-available {
+            background-color: var(--success-color);
+        }
+
+        .progress-reserved {
+            background-color: var(--warning-color);
+        }
+
+        .progress-sold {
+            background-color: var(--blue-accent);
+        }
+
+        /* Section Title */
+        .section-title {
+            font-size: 1.1rem;
+            margin: 1.5rem 0 1rem;
+            color: var(--text-color);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-title i {
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+
+        /* Fraccionamientos List */
+        .fraccionamientos-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .fraccionamiento-card {
+            background-color: var(--white);
+            border-radius: var(--rounded);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .fraccionamiento-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .fraccionamiento-image-container {
+            width: 100%;
+            height: 140px;
+            background-color: var(--dark-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        .fraccionamiento-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .fraccionamiento-content {
+            padding: 1rem;
+        }
+
+        .fraccionamiento-header {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 0.8rem;
+        }
+
+        .fraccionamiento-logo {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--rounded-sm);
+            object-fit: cover;
+            margin-right: 0.8rem;
+            background-color: var(--light-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            flex-shrink: 0;
+            border: 1px solid var(--medium-gray);
+        }
+
+        .fraccionamiento-info {
+            flex: 1;
+        }
+
+        .fraccionamiento-name {
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+            color: var(--text-color);
+            font-size: 1.1rem;
+        }
+
+        .fraccionamiento-location {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .fraccionamiento-location i {
+            font-size: 0.8rem;
+        }
+
+        .fraccionamiento-description {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-bottom: 0.8rem;
+            line-height: 1.4;
+        }
+
+        .fraccionamiento-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            text-align: center;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            padding: 0.6rem;
+            border-radius: var(--rounded-sm);
+            font-size: 0.9rem;
+        }
+
+        .available-stat {
+            background-color: var(--success-light);
+        }
+
+        .reserved-stat {
+            background-color: var(--warning-light);
+        }
+
+        .sold-stat {
+            background-color: var(--accent-color);
+        }
+
+        .stat-number {
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+            font-size: 1.1rem;
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .available-stat .stat-number {
+            color: var(--success-color);
+        }
+
+        .reserved-stat .stat-number {
+            color: var(--warning-color);
+        }
+
+        .sold-stat .stat-number {
+            color: var(--blue-accent);
+        }
+
+        .fraccionamiento-actions {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border-radius: var(--rounded-sm);
             border: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 4px;
+            font-weight: 500;
+            font-size: 0.85rem;
             cursor: pointer;
-            font-weight: bold;
+            transition: var(--transition);
             display: flex;
             align-items: center;
-            transition: background-color 0.3s;
+            gap: 0.4rem;
         }
-        
-        .btn-primary i {
-            margin-right: 8px;
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--white);
         }
-        
+
         .btn-primary:hover {
-            background-color: #2980b9;
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .btn i {
+            font-size: 0.8rem;
+        }
+
+        /* Botón flotante para agregar fraccionamiento */
+        .floating-btn {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            z-index: 99;
+            transition: var(--transition);
+        }
+
+        .floating-btn:hover {
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .floating-btn i {
+            font-size: 1.5rem;
+        }
+
+        /* Desktop Styles */
+        @media (min-width: 768px) {
+            .navbar-desktop {
+                display: block;
+            }
+
+            .navbar-mobile {
+                display: none;
+            }
+
+            .container {
+                padding: 1.5rem 2rem;
+            }
+
+            .stats-container {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 1rem;
+            }
+
+            .stat-card {
+                padding: 1.5rem;
+            }
+
+            .stat-card-title {
+                font-size: 0.85rem;
+            }
+
+            .stat-card-value {
+                font-size: 1.6rem;
+            }
+
+            .section-title {
+                font-size: 1.2rem;
+                margin: 1.8rem 0 1.2rem;
+            }
+
+            .fraccionamientos-list {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+                gap: 1.2rem;
+            }
+
+            .fraccionamiento-card {
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+            }
+
+            .fraccionamiento-image-container {
+                height: 160px;
+                padding: 2rem;
+            }
+
+            .fraccionamiento-content {
+                padding: 1.2rem;
+                flex-grow: 1;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .fraccionamiento-stats {
+                margin-bottom: 1rem;
+                gap: 0.8rem;
+            }
+
+            .fraccionamiento-actions {
+                margin-top: auto;
+            }
+
+            .floating-btn {
+                bottom: 30px;
+                right: 30px;
+                width: 70px;
+                height: 70px;
+            }
+
+            .floating-btn i {
+                font-size: 1.8rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fraccionamiento-card {
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+
+        .fraccionamiento-card:nth-child(1) { animation-delay: 0.1s; }
+        .fraccionamiento-card:nth-child(2) { animation-delay: 0.2s; }
+        .fraccionamiento-card:nth-child(3) { animation-delay: 0.3s; }
+
+        /*ESTILOS DEL MODAL PARA SALIR*/
+        .modal-overlay {
+            position: fixed; left: 0; top: 0; width: 100vw; height: 100vh;
+            background: rgba(30,71,138,0.18); z-index: 999;
+        }
+        .modal-content {
+            position: fixed; left: 50%; top: 50%; transform: translate(-50%,-50%);
+            background: var(--white); border-radius: var(--rounded); box-shadow: var(--shadow-lg);
+            padding: 2rem 1.5rem; z-index: 1000; min-width: 300px; text-align: center;
         }
         
-        /* Modal */
-        .modal {
+        .modal-actions { margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: center; }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--accent-color);
+        }
+
+        .btn-primary.ver-detalles,
+        .fraccionamiento-actions .btn-primary {
+            background: linear-gradient(90deg, #1e478a 60%, #398CA2 100%);
+            color: #fff;
+            border: none;
+            border-radius: 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            box-shadow: 0 2px 12px rgba(30,71,138,0.10);
+            padding: 0.7rem 1.6rem;
+            transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary.ver-detalles:hover,
+        .fraccionamiento-actions .btn-primary:hover {
+            background: linear-gradient(90deg, #398CA2 60%, #1e478a 100%);
+            transform: translateY(-2px) scale(1.04);
+            box-shadow: 0 4px 18px rgba(30,71,138,0.16);
+        }
+
+        .btn-primary.ver-detalles i,
+        .fraccionamiento-actions .btn-primary i {
+            font-size: 1.15rem;
+            margin-right: 0.2rem;
+        }
+
+        /* Modal para nuevo fraccionamiento */
+        .modal-nuevo-fraccionamiento {
             display: none;
             position: fixed;
             top: 0;
@@ -152,17 +679,17 @@
             z-index: 1001;
             overflow-y: auto;
         }
-        
-        .modal-content {
+
+        .modal-nuevo-content {
             background-color: white;
             margin: 2rem auto;
             width: 90%;
             max-width: 700px;
             border-radius: 8px;
-            box-shadow: var(--shadow);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             animation: modalFade 0.3s;
         }
-        
+
         @keyframes modalFade {
             from {
                 opacity: 0;
@@ -173,8 +700,8 @@
                 transform: translateY(0);
             }
         }
-        
-        .modal-header {
+
+        .modal-nuevo-header {
             background-color: var(--primary-color);
             color: white;
             padding: 1.2rem;
@@ -184,27 +711,27 @@
             justify-content: space-between;
             align-items: center;
         }
-        
-        .close {
+
+        .modal-nuevo-close {
             color: white;
             font-size: 1.5rem;
             cursor: pointer;
         }
-        
-        .modal-body {
+
+        .modal-nuevo-body {
             padding: 1.5rem;
         }
-        
+
         .form-group {
             margin-bottom: 1.2rem;
         }
-        
+
         .form-group label {
             display: block;
             margin-bottom: 0.5rem;
             font-weight: 500;
         }
-        
+
         .form-control {
             width: 100%;
             padding: 0.8rem;
@@ -212,43 +739,43 @@
             border-radius: 4px;
             font-size: 1rem;
         }
-        
+
         textarea.form-control {
             min-height: 100px;
             resize: vertical;
         }
-        
+
         .form-row {
             display: flex;
             gap: 1rem;
         }
-        
+
         .form-row .form-group {
             flex: 1;
         }
-        
+
         .services-list {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             gap: 0.8rem;
             margin-top: 0.5rem;
         }
-        
+
         .service-item {
             display: flex;
             align-items: center;
         }
-        
+
         .service-item input {
             margin-right: 0.5rem;
         }
-        
-        .modal-footer {
+
+        .modal-nuevo-footer {
             padding: 1.2rem;
             border-top: 1px solid #eee;
             text-align: right;
         }
-        
+
         .btn-secondary {
             background-color: #95a5a6;
             color: white;
@@ -258,7 +785,7 @@
             cursor: pointer;
             margin-right: 0.8rem;
         }
-        
+
         .btn-success {
             background-color: var(--success-color);
             color: white;
@@ -267,90 +794,328 @@
             border-radius: 4px;
             cursor: pointer;
         }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            .navbar {
-                padding: 1rem;
-            }
-            
-            .nav-links {
-                display: none;
-            }
-            
-            .mobile-navbar {
-                display: block;
-            }
-            
-            .container {
-                margin-bottom: 5rem;
-            }
-            
-            .form-row {
-                flex-direction: column;
-                gap: 0;
-            }
-            
-            .services-list {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
     </style>
 </head>
 <body>
-    <!-- Navbar para desktop -->
-    <nav class="navbar">
-        <div class="logo">
-            <i class="fas fa-home"></i>
-            <span>Bienes Raíces Pro</span>
+    <!-- Navbar Desktop -->
+    <nav class="navbar-desktop">
+        <div class="navbar-desktop-container">
+            <div class="logo">
+                <i class="fas fa-home"></i>
+                <span>Nelva Bienes Raíces</span>
+            </div>
+            <div class="nav-links">
+                <a href="#" class="active"><i class="fas fa-home"></i> Inicio</a>
+                <a href="apartados.html"><i class="fas fa-calendar-check"></i> Apartados</a>
+                <a href="ventas.html"><i class="fas fa-history"></i> Ventas</a>
+                <a href="perfil.html"><i class="fas fa-user"></i> Perfil</a>
+                <a href="#" id="logout-btn-desktop"><i class="fas fa-sign-out-alt"></i> Salir</a>
+            </div>
         </div>
-        <ul class="nav-links">
-            <li><a href="#"><i class="fas fa-users"></i> Asesores</a></li>
-            <li><a href="#"><i class="fas fa-file-contract"></i> Solicitudes de apartado</a></li>
-            <li><a href="#"><i class="fas fa-handshake"></i> Solicitudes de venta</a></li>
-        </ul>
     </nav>
 
-    <!-- Contenido principal -->
-    <div class="container">
-        <div class="header">
-            <h1>Gestión de Fraccionamientos</h1>
-            <button class="btn-primary" id="btnNewDevelopment">
-                <i class="fas fa-plus"></i> Nuevo Fraccionamiento
-            </button>
+    <!-- Navbar con opciones requeridas -->
+    <nav class="navbar-options">
+        <div class="navbar-options-container">
+            <ul class="options-links">
+                <li><a href="#"><i class="fas fa-users"></i> Asesores</a></li>
+                <li><a href="#"><i class="fas fa-file-contract"></i> Solicitud de Apartado</a></li>
+                <li><a href="#"><i class="fas fa-handshake"></i> Solicitud de Ventas</a></li>
+            </ul>
         </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container"> 
+        <h1 class="page-title">
+            <i class="fas fa-map-marked-alt"></i>
+            <span>Bienvenido de nuevo</span>
+        </h1>
+
+        <!-- Stats Overview -->
+        <div class="stats-container">
+            <div class="stat-card total">
+                <h3 class="stat-card-title">
+                    <i class="fas fa-city"></i>
+                    <span>Total Fraccionamientos</span>
+                </h3>
+                <p class="stat-card-value">12</p>
+                <p class="stat-card-description">Activos</p>
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: 100%"></div>
+                </div>
+            </div>
+            <div class="stat-card available">
+                <h3 class="stat-card-title">
+                    <i class="fas fa-check-double"></i>
+                    
+                    <span>Lotes Vendidos</span>
+                </h3>
+                <p class="stat-card-value">245</p>
+                <p class="stat-card-description">Finalizados</p>
+                <div class="progress-container">
+                    <div class="progress-bar progress-available" style="width: 38%"></div>
+                </div>
+            </div>
+            <div class="stat-card reserved">
+                <h3 class="stat-card-title">
+                    <i class="fas fa-clock"></i>
+                    <span>Lotes Apartados</span>
+                </h3>
+                <p class="stat-card-value">78</p>
+                <p class="stat-card-description">En proceso</p>
+                <div class="progress-container">
+                    <div class="progress-bar progress-reserved" style="width: 12%"></div>
+                </div>
+            </div>
+            <div class="stat-card sold">
+                <h3 class="stat-card-title">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Lotes disponibles</span>
+                </h3>
+                <p class="stat-card-value">312</p>
+                <p class="stat-card-description">para venta</p>
+                <div class="progress-container">
+                    <div class="progress-bar progress-sold" style="width: 50%"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fraccionamientos List -->
+        <h2 class="section-title">
+            <i class="fas fa-list-ul"></i>
+            <span>Lista de Fraccionamientos</span>
+        </h2>
         
-        <p>Aquí podrás gestionar todos los fraccionamientos de la empresa. Presiona el botón "Nuevo Fraccionamiento" para agregar uno nuevo.</p>
-        
-        <!-- Contenido adicional de ejemplo -->
-        <div style="margin-top: 2rem; padding: 1.5rem; background: white; border-radius: 8px; box-shadow: var(--shadow);">
-            <h2>Fraccionamientos existentes</h2>
-            <p>No hay fraccionamientos registrados. Comienza agregando uno nuevo.</p>
+        <div class="fraccionamientos-list">
+            <!-- Fraccionamiento 2 -->
+            <div class="fraccionamiento-card">
+                <div class="fraccionamiento-image-container">
+                    <img src="https://nelvabienesraices.com/wp-content/uploads/2025/01/OCEANICA-BLANCO.png" alt="Villas del Mar" class="fraccionamiento-image">
+                </div>
+                <div class="fraccionamiento-content">
+                    <div class="fraccionamiento-header">
+                    
+                        <div class="fraccionamiento-info">
+                            <h3 class="fraccionamiento-name">OCEÁNICA</h3>
+                            <p class="fraccionamiento-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>PLAYA GUAPINOLE, STA. MARÍA TONAMECA, OAX. NELVA</span>
+                            </p>
+                            
+                        </div>
+                    </div>
+                    <div class="fraccionamiento-stats">
+                        
+                        <div class="stat-item sold-stat">
+                            <span class="stat-number">50</span>
+                            <span class="stat-label">Disponibles</span>
+                        </div>
+
+                        <div class="stat-item reserved-stat">
+                            <span class="stat-number">18</span>
+                            <span class="stat-label">Apartados</span>
+                        </div>  
+                       
+                        <div class="stat-item available-stat">
+                            <span class="stat-number">32</span>
+                            <span class="stat-label">Vendidos</span>
+                        </div>
+                    </div>
+                    <div class="fraccionamiento-actions">
+                        <button class="btn btn-primary ver-detalles">
+                            <i class="fas fa-eye"></i>
+                            <span>Ver Detalles</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fraccionamiento 3 -->
+            <div class="fraccionamiento-card">
+                <div class="fraccionamiento-image-container">
+                    <img src="https://nelvabienesraices.com/wp-content/uploads/2025/01/SICARU-BLANCO_Mesa-de-trabajo-1.png" alt="Altos de la Montaña" class="fraccionamiento-image">
+                </div>
+                <div class="fraccionamiento-content">
+                    <div class="fraccionamiento-header">
+                        
+                        <div class="fraccionamiento-info">
+                            <h3 class="fraccionamiento-name">SICARÚ</h3>
+                            <p class="fraccionamiento-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Emiliano zapata, guelaguechi, salina cruz, oaxaca, mexico.</span>
+                            </p>
+                            
+                        </div>
+                    </div>
+                    <div class="fraccionamiento-stats">
+                        <div class="stat-item sold-stat">
+                            <span class="stat-number">50</span>
+                            <span class="stat-label">Disponibles</span>
+                        </div>
+
+                        <div class="stat-item reserved-stat">
+                            <span class="stat-number">18</span>
+                            <span class="stat-label">Apartados</span>
+                        </div>  
+                       
+                        <div class="stat-item available-stat">
+                            <span class="stat-number">32</span>
+                            <span class="stat-label">Vendidos</span>
+                        </div>
+                    </div>
+                    <div class="fraccionamiento-actions">
+                        <button class="btn btn-primary ver-detalles">
+                            <i class="fas fa-eye"></i>
+                            <span>Ver Detalles</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Fraccionamiento 4 -->
+            <div class="fraccionamiento-card">
+                <div class="fraccionamiento-image-container">
+                    <img src="https://nelvabienesraices.com/wp-content/uploads/2025/01/zull_Mesa-de-trabajo-1.png" alt="Villas del Mar" class="fraccionamiento-image">
+                </div>
+                <div class="fraccionamiento-content">
+                    <div class="fraccionamiento-header">
+                    
+                        <div class="fraccionamiento-info">
+                            <h3 class="fraccionamiento-name">REAL CAMPESTRE</h3>
+                            <p class="fraccionamiento-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Santa María Tonameca, Oaxaca</span>
+                            </p>
+                            
+                        </div>
+                    </div>
+                    <div class="fraccionamiento-stats">
+                        
+                        <div class="stat-item sold-stat">
+                            <span class="stat-number">50</span>
+                            <span class="stat-label">Disponibles</span>
+                        </div>
+
+                        <div class="stat-item reserved-stat">
+                            <span class="stat-number">18</span>
+                            <span class="stat-label">Apartados</span>
+                        </div>  
+                       
+                        <div class="stat-item available-stat">
+                            <span class="stat-number">32</span>
+                            <span class="stat-label">Vendidos</span>
+                        </div>
+                    </div>
+                    <div class="fraccionamiento-actions">
+                        <button class="btn btn-primary ver-detalles">
+                            <i class="fas fa-eye"></i>
+                            <span>Ver Detalles</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Fraccionamiento 5 -->
+            <div class="fraccionamiento-card">
+                <div class="fraccionamiento-image-container">
+                    <img src="https://nelvabienesraices.com/wp-content/uploads/2025/01/ubicacion-blancoRecurso-2-8.png" alt="Villas del Mar" class="fraccionamiento-image">
+                </div>
+                <div class="fraccionamiento-content">
+                    <div class="fraccionamiento-header">
+                    
+                        <div class="fraccionamiento-info">
+                            <h3 class="fraccionamiento-name">REAL CAMPESTRE</h3>
+                            <p class="fraccionamiento-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Santa María Tonameca, Oaxaca</span>
+                            </p>
+                            
+                        </div>
+                    </div>
+                    <div class="fraccionamiento-stats">
+                        
+                        <div class="stat-item sold-stat">
+                            <span class="stat-number">50</span>
+                            <span class="stat-label">Disponibles</span>
+                        </div>
+
+                        <div class="stat-item reserved-stat">
+                            <span class="stat-number">18</span>
+                            <span class="stat-label">Apartados</span>
+                        </div>  
+                       
+                        <div class="stat-item available-stat">
+                            <span class="stat-number">32</span>
+                            <span class="stat-label">Vendidos</span>
+                        </div>
+                    </div>
+                    <div class="fraccionamiento-actions">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-eye"></i>
+                            <span>Ver Detalles</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
         </div>
     </div>
 
-    <!-- Navbar para móvil -->
-    <nav class="mobile-navbar">
-        <ul class="mobile-nav-links">
-            <li><a href="#"><i class="fas fa-file-contract"></i> Apartados</a></li>
-            <li><a href="#"><i class="fas fa-handshake"></i> Ventas</a></li>
-            <li><a href="#"><i class="fas fa-user"></i> Perfil</a></li>
-            <li><a href="#"><i class="fas fa-sign-out-alt"></i> Salir</a></li>
-        </ul>
+    <!-- Botón flotante para agregar fraccionamiento -->
+    <div class="floating-btn" id="btnNuevoFraccionamiento">
+        <i class="fas fa-plus"></i>
+    </div>
+
+    <!-- Navbar Mobile -->
+    <nav class="navbar-mobile">
+        <a href="#" class="nav-item active">
+            <i class="fas fa-home"></i>
+            <span>Inicio</span>
+        </a>
+        <a href="apartados.html" class="nav-item">
+            <i class="fas fa-calendar-check"></i>
+            <span>Apartados</span>
+        </a>
+        <a href="ventas.html" class="nav-item">
+            <i class="fas fa-history"></i>
+            <span>Ventas</span>
+        </a>
+        <a href="perfil.html" class="nav-item">
+            <i class="fas fa-user"></i>
+            <span>Perfil</span>
+        </a>
+        <a href="#" class="nav-item" id="logout-btn-mobile">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Salir</span>
+        </a>
     </nav>
 
-    <!-- Modal para nuevo fraccionamiento -->
-    <div id="modalNewDevelopment" class="modal">
+    <!-- Modal para cerrar sesión -->
+    <div id="logout-modal" style="display:none;">
+        <div class="modal-overlay"></div>
         <div class="modal-content">
-            <div class="modal-header">
-                <h2>Nuevo Fraccionamiento</h2>
-                <span class="close">&times;</span>
+            <h2>¿Cerrar sesión?</h2>
+            <p>¿Estás seguro que deseas salir de tu cuenta?</p>
+            <div class="modal-actions">
+                <button id="confirm-logout" class="btn btn-primary">Sí, salir</button>
+                <button id="cancel-logout" class="btn btn-outline">Cancelar</button>
             </div>
-            <div class="modal-body">
-                <form id="developmentForm">
+        </div>
+    </div>
+
+    <!-- Modal para nuevo fraccionamiento -->
+    <div id="modalNuevoFraccionamiento" class="modal-nuevo-fraccionamiento">
+        <div class="modal-nuevo-content">
+            <div class="modal-nuevo-header">
+                <h2>Nuevo Fraccionamiento</h2>
+                <span class="modal-nuevo-close">&times;</span>
+            </div>
+            <div class="modal-nuevo-body">
+                <form id="nuevoFraccionamientoForm">
                     <div class="form-group">
-                        <label for="developmentName">Nombre del fraccionamiento *</label>
-                        <input type="text" id="developmentName" class="form-control" required>
+                        <label for="nombreFraccionamiento">Nombre del fraccionamiento *</label>
+                        <input type="text" id="nombreFraccionamiento" class="form-control" required>
                     </div>
                     
                     <div class="form-group">
@@ -360,28 +1125,28 @@
                     
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="startNumber">Número inicial de terrenos *</label>
-                            <input type="number" id="startNumber" class="form-control" required min="1">
+                            <label for="numeroInicial">Número inicial de terrenos *</label>
+                            <input type="number" id="numeroInicial" class="form-control" required min="1">
                         </div>
                         <div class="form-group">
-                            <label for="endNumber">Número final de terrenos *</label>
-                            <input type="number" id="endNumber" class="form-control" required min="1">
+                            <label for="numeroFinal">Número final de terrenos *</label>
+                            <input type="number" id="numeroFinal" class="form-control" required min="1">
                         </div>
                     </div>
                     
                     <div class="form-group">
-                        <label for="totalLots">Número total de lotes *</label>
-                        <input type="number" id="totalLots" class="form-control" required min="1">
+                        <label for="totalLotes">Número total de lotes *</label>
+                        <input type="number" id="totalLotes" class="form-control" required min="1">
                     </div>
                     
                     <div class="form-group">
-                        <label for="technicalSpecs">Ficha técnica detallada *</label>
-                        <textarea id="technicalSpecs" class="form-control" required></textarea>
+                        <label for="fichaTecnica">Ficha técnica detallada *</label>
+                        <textarea id="fichaTecnica" class="form-control" required></textarea>
                     </div>
                     
                     <div class="form-group">
-                        <label for="ownerInfo">Datos del propietario *</label>
-                        <textarea id="ownerInfo" class="form-control" required placeholder="Nombre completo, dirección, teléfono, RFC, etc."></textarea>
+                        <label for="datosPropietario">Datos del propietario *</label>
+                        <textarea id="datosPropietario" class="form-control" required placeholder="Nombre completo, dirección, teléfono, RFC, etc."></textarea>
                     </div>
                     
                     <div class="form-group">
@@ -415,70 +1180,98 @@
                     </div>
                     
                     <div class="form-group">
-                        <label for="generalPrice">Precio general de los terrenos (MXN) *</label>
-                        <input type="number" id="generalPrice" class="form-control" required min="0" step="0.01">
+                        <label for="precioGeneral">Precio general de los terrenos (MXN) *</label>
+                        <input type="number" id="precioGeneral" class="form-control" required min="0" step="0.01">
                     </div>
                 </form>
             </div>
-            <div class="modal-footer">
-                <button class="btn-secondary" id="btnCancel">Cancelar</button>
-                <button class="btn-success" id="btnSave">Guardar</button>
+            <div class="modal-nuevo-footer">
+                <button class="btn-secondary" id="btnCancelarNuevo">Cancelar</button>
+                <button class="btn-success" id="btnGuardarNuevo">Guardar</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Funcionalidad del modal
-        const modal = document.getElementById('modalNewDevelopment');
-        const btnOpen = document.getElementById('btnNewDevelopment');
-        const btnClose = document.querySelector('.close');
-        const btnCancel = document.getElementById('btnCancel');
-        const btnSave = document.getElementById('btnSave');
+        // Funcionalidad para el modal de cierre de sesión
+        const logoutBtns = [document.getElementById('logout-btn-desktop'), document.getElementById('logout-btn-mobile')];
+        const modalLogout = document.getElementById('logout-modal');
+        const confirmBtn = document.getElementById('confirm-logout');
+        const cancelBtn = document.getElementById('cancel-logout');
+
+        logoutBtns.forEach(btn => {
+            if (btn) btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                modalLogout.style.display = 'block';
+            });
+        });
+
+        cancelBtn.addEventListener('click', function() {
+            modalLogout.style.display = 'none';
+        });
+
+        confirmBtn.addEventListener('click', function() {
+            window.location.href = 'index.html';
+        });
+
+        modalLogout.querySelector('.modal-overlay').addEventListener('click', function() {
+            modalLogout.style.display = 'none';
+        });
+
+        // Redirigir al hacer click en "Ver Detalles"
+        document.querySelectorAll('.ver-detalles').forEach(btn => {
+            btn.addEventListener('click', function() {
+                window.location.href = 'fraccionamiento.html';
+            });
+        });
+
+        // Funcionalidad para el modal de nuevo fraccionamiento
+        const modalNuevo = document.getElementById('modalNuevoFraccionamiento');
+        const btnAbrirNuevo = document.getElementById('btnNuevoFraccionamiento');
+        const btnCerrarNuevo = document.querySelector('.modal-nuevo-close');
+        const btnCancelarNuevo = document.getElementById('btnCancelarNuevo');
+        const btnGuardarNuevo = document.getElementById('btnGuardarNuevo');
         
-        btnOpen.addEventListener('click', () => {
-            modal.style.display = 'block';
+        btnAbrirNuevo.addEventListener('click', () => {
+            modalNuevo.style.display = 'block';
         });
         
-        const closeModal = () => {
-            modal.style.display = 'none';
+        const cerrarModalNuevo = () => {
+            modalNuevo.style.display = 'none';
         };
         
-        btnClose.addEventListener('click', closeModal);
-        btnCancel.addEventListener('click', closeModal);
+        btnCerrarNuevo.addEventListener('click', cerrarModalNuevo);
+        btnCancelarNuevo.addEventListener('click', cerrarModalNuevo);
         
-        btnSave.addEventListener('click', () => {
-            // Validación básica
-            const form = document.getElementById('developmentForm');
+        btnGuardarNuevo.addEventListener('click', () => {
+            const form = document.getElementById('nuevoFraccionamientoForm');
             if (form.checkValidity()) {
                 alert('Fraccionamiento guardado correctamente');
-                closeModal();
-                // Aquí iría la lógica para guardar los datos
+                cerrarModalNuevo();
             } else {
                 alert('Por favor, complete todos los campos obligatorios');
             }
         });
         
-        // Cerrar modal al hacer clic fuera del contenido
         window.addEventListener('click', (event) => {
-            if (event.target === modal) {
-                closeModal();
+            if (event.target === modalNuevo) {
+                cerrarModalNuevo();
             }
         });
         
         // Validación de rango de numeración
-        const startNumber = document.getElementById('startNumber');
-        const endNumber = document.getElementById('endNumber');
-        const totalLots = document.getElementById('totalLots');
+        const numeroInicial = document.getElementById('numeroInicial');
+        const numeroFinal = document.getElementById('numeroFinal');
+        const totalLotes = document.getElementById('totalLotes');
         
-        endNumber.addEventListener('change', () => {
-            if (parseInt(startNumber.value) >= parseInt(endNumber.value)) {
+        numeroFinal.addEventListener('change', () => {
+            if (parseInt(numeroInicial.value) >= parseInt(numeroFinal.value)) {
                 alert('El número final debe ser mayor al número inicial');
-                endNumber.value = '';
+                numeroFinal.value = '';
             }
             
-            // Calcular total de lotes
-            if (startNumber.value && endNumber.value) {
-                totalLots.value = parseInt(endNumber.value) - parseInt(startNumber.value) + 1;
+            if (numeroInicial.value && numeroFinal.value) {
+                totalLotes.value = parseInt(numeroFinal.value) - parseInt(numeroInicial.value) + 1;
             }
         });
     </script>
