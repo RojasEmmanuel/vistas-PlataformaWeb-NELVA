@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienes Raíces - Gestión de Fraccionamientos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --success-color: #27ae60;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7f9;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        /* Navbar para desktop */
+        .navbar {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            color: var(--secondary-color);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 1.5rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Navbar móvil */
+        .mobile-navbar {
+            display: none;
+            background-color: var(--primary-color);
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            padding: 0.8rem;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+        
+        .mobile-nav-links {
+            display: flex;
+            justify-content: space-around;
+            list-style: none;
+        }
+        
+        .mobile-nav-links a {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 0.8rem;
+        }
+        
+        .mobile-nav-links i {
+            font-size: 1.2rem;
+            margin-bottom: 0.3rem;
+        }
+        
+        /* Contenido principal */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .btn-primary {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-primary i {
+            margin-right: 8px;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1001;
+            overflow-y: auto;
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 2rem auto;
+            width: 90%;
+            max-width: 700px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            animation: modalFade 0.3s;
+        }
+        
+        @keyframes modalFade {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .modal-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1.2rem;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .close {
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .modal-body {
+            padding: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        .services-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 0.8rem;
+            margin-top: 0.5rem;
+        }
+        
+        .service-item {
+            display: flex;
+            align-items: center;
+        }
+        
+        .service-item input {
+            margin-right: 0.5rem;
+        }
+        
+        .modal-footer {
+            padding: 1.2rem;
+            border-top: 1px solid #eee;
+            text-align: right;
+        }
+        
+        .btn-secondary {
+            background-color: #95a5a6;
+            color: white;
+            border: none;
+            padding: 0.7rem 1.2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 0.8rem;
+        }
+        
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .mobile-navbar {
+                display: block;
+            }
+            
+            .container {
+                margin-bottom: 5rem;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .services-list {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar para desktop -->
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-home"></i>
+            <span>Bienes Raíces Pro</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#"><i class="fas fa-users"></i> Asesores</a></li>
+            <li><a href="#"><i class="fas fa-file-contract"></i> Solicitudes de apartado</a></li>
+            <li><a href="#"><i class="fas fa-handshake"></i> Solicitudes de venta</a></li>
+        </ul>
+    </nav>
+
+    <!-- Contenido principal -->
+    <div class="container">
+        <div class="header">
+            <h1>Gestión de Fraccionamientos</h1>
+            <button class="btn-primary" id="btnNewDevelopment">
+                <i class="fas fa-plus"></i> Nuevo Fraccionamiento
+            </button>
+        </div>
+        
+        <p>Aquí podrás gestionar todos los fraccionamientos de la empresa. Presiona el botón "Nuevo Fraccionamiento" para agregar uno nuevo.</p>
+        
+        <!-- Contenido adicional de ejemplo -->
+        <div style="margin-top: 2rem; padding: 1.5rem; background: white; border-radius: 8px; box-shadow: var(--shadow);">
+            <h2>Fraccionamientos existentes</h2>
+            <p>No hay fraccionamientos registrados. Comienza agregando uno nuevo.</p>
+        </div>
+    </div>
+
+    <!-- Navbar para móvil -->
+    <nav class="mobile-navbar">
+        <ul class="mobile-nav-links">
+            <li><a href="#"><i class="fas fa-file-contract"></i> Apartados</a></li>
+            <li><a href="#"><i class="fas fa-handshake"></i> Ventas</a></li>
+            <li><a href="#"><i class="fas fa-user"></i> Perfil</a></li>
+            <li><a href="#"><i class="fas fa-sign-out-alt"></i> Salir</a></li>
+        </ul>
+    </nav>
+
+    <!-- Modal para nuevo fraccionamiento -->
+    <div id="modalNewDevelopment" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Nuevo Fraccionamiento</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="developmentForm">
+                    <div class="form-group">
+                        <label for="developmentName">Nombre del fraccionamiento *</label>
+                        <input type="text" id="developmentName" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="svgFile">Plano (formato SVG)</label>
+                        <input type="file" id="svgFile" class="form-control" accept=".svg">
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="startNumber">Número inicial de terrenos *</label>
+                            <input type="number" id="startNumber" class="form-control" required min="1">
+                        </div>
+                        <div class="form-group">
+                            <label for="endNumber">Número final de terrenos *</label>
+                            <input type="number" id="endNumber" class="form-control" required min="1">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="totalLots">Número total de lotes *</label>
+                        <input type="number" id="totalLots" class="form-control" required min="1">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="technicalSpecs">Ficha técnica detallada *</label>
+                        <textarea id="technicalSpecs" class="form-control" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="ownerInfo">Datos del propietario *</label>
+                        <textarea id="ownerInfo" class="form-control" required placeholder="Nombre completo, dirección, teléfono, RFC, etc."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Servicios disponibles *</label>
+                        <div class="services-list">
+                            <div class="service-item">
+                                <input type="checkbox" id="serviceWater" name="services" value="water">
+                                <label for="serviceWater">Agua potable</label>
+                            </div>
+                            <div class="service-item">
+                                <input type="checkbox" id="serviceElectricity" name="services" value="electricity">
+                                <label for="serviceElectricity">Energía eléctrica</label>
+                            </div>
+                            <div class="service-item">
+                                <input type="checkbox" id="serviceDrainage" name="services" value="drainage">
+                                <label for="serviceDrainage">Drenaje</label>
+                            </div>
+                            <div class="service-item">
+                                <input type="checkbox" id="serviceInternet" name="services" value="internet">
+                                <label for="serviceInternet">Internet</label>
+                            </div>
+                            <div class="service-item">
+                                <input type="checkbox" id="serviceGas" name="services" value="gas">
+                                <label for="serviceGas">Gas natural</label>
+                            </div>
+                            <div class="service-item">
+                                <input type="checkbox" id="serviceSecurity" name="services" value="security">
+                                <label for="serviceSecurity">Seguridad</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="generalPrice">Precio general de los terrenos (MXN) *</label>
+                        <input type="number" id="generalPrice" class="form-control" required min="0" step="0.01">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="btnCancel">Cancelar</button>
+                <button class="btn-success" id="btnSave">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Funcionalidad del modal
+        const modal = document.getElementById('modalNewDevelopment');
+        const btnOpen = document.getElementById('btnNewDevelopment');
+        const btnClose = document.querySelector('.close');
+        const btnCancel = document.getElementById('btnCancel');
+        const btnSave = document.getElementById('btnSave');
+        
+        btnOpen.addEventListener('click', () => {
+            modal.style.display = 'block';
+        });
+        
+        const closeModal = () => {
+            modal.style.display = 'none';
+        };
+        
+        btnClose.addEventListener('click', closeModal);
+        btnCancel.addEventListener('click', closeModal);
+        
+        btnSave.addEventListener('click', () => {
+            // Validación básica
+            const form = document.getElementById('developmentForm');
+            if (form.checkValidity()) {
+                alert('Fraccionamiento guardado correctamente');
+                closeModal();
+                // Aquí iría la lógica para guardar los datos
+            } else {
+                alert('Por favor, complete todos los campos obligatorios');
+            }
+        });
+        
+        // Cerrar modal al hacer clic fuera del contenido
+        window.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+        
+        // Validación de rango de numeración
+        const startNumber = document.getElementById('startNumber');
+        const endNumber = document.getElementById('endNumber');
+        const totalLots = document.getElementById('totalLots');
+        
+        endNumber.addEventListener('change', () => {
+            if (parseInt(startNumber.value) >= parseInt(endNumber.value)) {
+                alert('El número final debe ser mayor al número inicial');
+                endNumber.value = '';
+            }
+            
+            // Calcular total de lotes
+            if (startNumber.value && endNumber.value) {
+                totalLots.value = parseInt(endNumber.value) - parseInt(startNumber.value) + 1;
+            }
+        });
+    </script>
+</body>
+</html>
