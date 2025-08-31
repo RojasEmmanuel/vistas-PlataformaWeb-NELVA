@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Lotes con estatus en Mapbox</title>
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+  <script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
+  <link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body { 
+      margin:0; 
+      padding:0; 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    #map { 
+      position:absolute; 
+      top:0; 
+      bottom:0; 
+      width:100%; 
+    }
+    #logo {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      z-index: 10;
+      width: 120px;
+      pointer-events: none;
+      filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.3));
+      background-color: #2c3e50;
+    }
+    
+    /* Estilo moderno para el popup */
+    .mapboxgl-popup-content {
+      border-radius: 12px;
+      padding: 20px;
+      background: linear-gradient(135deg, #ffffff 0%, #f5f7fa 100%);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      max-width: 300px;
+    }
+    
+    .mapboxgl-popup-close-button {
+      font-size: 18px;
+      padding: 6px 10px;
+      color: #555;
+    }
+    
+    .lote-info {
+      text-align: center;
+    }
+    
+    .lote-numero {
+      font-size: 24px;
+      font-weight: 700;
+      color: #2c3e50;
+      margin-bottom: 5px;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    }
+    
+    .lote-area {
+      font-size: 18px;
+      color: #3498db;
+      background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+      padding: 8px 12px;
+      border-radius: 8px;
+      margin: 10px 0;
+      font-weight: 600;
+    }
+    
+    .lote-details {
+      margin-top: 15px;
+      border-top: 1px solid #eee;
+      padding-top: 15px;
+    }
+    
+    .lote-detail-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+    
+    .lote-detail-label {
+      color: #7f8c8d;
+      font-weight: 500;
+    }
+    
+    .lote-detail-value {
+      color: #2c3e50;
+      font-weight: 600;
+    }
+    
+    .estatus-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-top: 5px;
+      color: white;
+    }
+    
+    /* Estilos para los diferentes estatus */
+    .disponible {
+      background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+    }
+    
+    .vendido {
+      background: linear-gradient(135deg, #F44336 0%, #C62828 100%);
+    }
+    
+    .apartado {
+      background: linear-gradient(135deg, #FF9800 0%, #EF6C00 100%);
+    }
+    
+    /* Rosa de los vientos */
+    .compass {
+      position: absolute;
+      bottom: 30px;
+      right: 20px;
+      width: 80px;
+      height: 80px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 50%;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+    
+    .compass-inner {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 20px;
+      position: relative;
+      transition: transform 0.5s ease;
+    }
+    
+    .compass-n {
+      position: absolute;
+      top: 5px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-weight: bold;
+      font-size: 14px;
+      color: #e74c3c;
+    }
+    
+    .compass-arrow {
+      width: 2px;
+      height: 25px;
+      background: #e74c3c;
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    
+    /* Leyenda de estatus */
+    .legend {
+      position: absolute;
+      bottom: 30px;
+      left: 20px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 12px;
+      padding: 15px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+      z-index: 10;
+      font-size: 13px;
+      backdrop-filter: blur(5px);
+    }
+    
+    .legend-title {
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: #2c3e50;
+      text-align: center;
+      font-size: 14px;
+    }
+    
+    .legend-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    
+    .legend-color {
+      width: 20px;
+      height: 20px;
+      border-radius: 4px;
+      margin-right: 10px;
+    }
+    
+    /* Botón de orientación */
+    .reset-bearing {
+      position: absolute;
+      bottom: 120px;
+      right: 30px;
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 50%;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      cursor: pointer;
+      color: #2c3e50;
+      font-size: 18px;
+      transition: all 0.3s ease;
+    }
+    
+    .reset-bearing:hover {
+      background: white;
+      transform: scale(1.1);
+    }
+    
+    /* Mejoras para las etiquetas de los lotes */
+    .mapboxgl-marker {
+      pointer-events: none;
+    }
+    
+    /* Estilos para el badge del número de lote */
+    .lote-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      font-weight: bold;
+      font-size: 14px;
+      color: white;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    }
+    
+    .badge-disponible {
+      background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+    }
+    
+    .badge-vendido {
+      background: linear-gradient(135deg, #F44336 0%, #C62828 100%);
+    }
+    
+    .badge-apartado {
+      background: linear-gradient(135deg, #FF9800 0%, #EF6C00 100%);
+    }
+  </style>
+</head>
+<body>
+<img id="logo" src="OCEANICA.png" alt="Logo del Fraccionamiento">
+<div id="map"></div>
+
+<!-- Rosa de los vientos -->
+<div class="compass">
+  <div class="compass-inner">
+    <div class="compass-n">N</div>
+    <div class="compass-arrow"></div>
+    <i class="fas fa-diamond" style="font-size: 12px;"></i>
+  </div>
+</div>
+
+<!-- Leyenda de estatus -->
+<div class="legend">
+  <div class="legend-title">Estatus de Lotes</div>
+  <div class="legend-item">
+    <div class="legend-color" style="background-color: #4CAF50;"></div>
+    <span>Disponible</span>
+  </div>
+  <div class="legend-item">
+    <div class="legend-color" style="background-color: #F44336;"></div>
+    <span>Vendido</span>
+  </div>
+  <div class="legend-item">
+    <div class="legend-color" style="background-color: #FF9800;"></div>
+    <span>Apartado</span>
+  </div>
+</div>
+
+<!-- Botón para resetear orientación -->
+<div class="reset-bearing">
+  <i class="fas fa-compass"></i>
+</div>
+
+<script>
+  // 🔑 Coloca tu token de Mapbox aquí
+  mapboxgl.accessToken = 'pk.eyJ1Ijoicm9qYXNkZXYiLCJhIjoiY21leDF4N2JtMTI0NTJrcHlsdjBiN2Y3YiJ9.RB87H34djrYH3WrRa-12Pg';
+
+  const map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/streets-v12',
+    center: [-96.5, 15.7],
+    zoom: 14,
+    pitch: 45,   // inclinación para 3D
+    bearing: -17, // orientación opcional
+    antialias: true // Mejora la renderización para un aspecto más suave
+  });
+
+  // Actualizar la rosa de los vientos según el movimiento del mapa
+  function updateCompass() {
+    const bearing = map.getBearing();
+    document.querySelector('.compass-inner').style.transform = `rotate(${-bearing}deg)`;
+  }
+
+  // Rotar la rosa de los vientos cuando el mapa se mueva
+  map.on('rotate', updateCompass);
+  
+  // Inicializar la rosa de los vientos
+  map.on('load', () => {
+    updateCompass();
+    
+    // Botón para resetear la orientación norte
+    document.querySelector('.reset-bearing').addEventListener('click', () => {
+      map.easeTo({
+        bearing: 0,
+        duration: 1000
+      });
+    });
+
+    // Añadir capa de terreno
+    map.addSource('mapbox-dem', {
+      type: 'raster-dem',
+      url: 'mapbox://mapbox.mapbox-terrain-dem-v1',
+      tileSize: 512,
+      maxzoom: 14
+    });
+    map.setTerrain({ source: 'mapbox-dem', exaggeration: 1.5 });
+
+    
+
+    // Intentar cargar el archivo GeoJSON, si falla usar datos de ejemplo
+    function loadGeoJSON() {
+      return fetch('lotes.geojson')
+        .then(res => {
+          if (!res.ok) throw new Error('No se pudo cargar el archivo GeoJSON');
+          return res.json();
+        })
+        .catch(error => {
+          console.error('Error cargando lotes.geojson, usando datos de ejemplo:', error);
+          return sampleData;
+        });
+    }
+
+    loadGeoJSON().then(data => {
+      // Filtrar elementos que no tienen número de lote (como el polígono del fraccionamiento)
+      const filteredData = {
+        ...data,
+        features: data.features.filter(feature => 
+          feature.properties.lote && feature.properties.lote.trim() !== ""
+        )
+      };
+
+      // Añadir el polígono del fraccionamiento como una capa separada
+      const fraccionamiento = data.features.find(feature => 
+        feature.properties.estatus === "Fraccionamiento"
+      );
+
+      if (fraccionamiento) {
+        map.addSource('fraccionamiento', {
+          type: 'geojson',
+          data: {
+            type: 'FeatureCollection',
+            features: [fraccionamiento]
+          }
+        });
+
+        map.addLayer({
+          id: 'fraccionamiento-fill',
+          type: 'fill',
+          source: 'fraccionamiento',
+          paint: {
+            'fill-color': '#e3f2fd',
+            'fill-opacity': 0.4
+          }
+        });
+
+        map.addLayer({
+          id: 'fraccionamiento-border',
+          type: 'line',
+          source: 'fraccionamiento',
+          paint: {
+            'line-color': '#0d47a1',
+            'line-width': 2,
+            'line-opacity': 0.6
+          }
+        });
+      }
+
+      map.addSource('lotes', {
+        type: 'geojson',
+        data: filteredData
+      });
+
+      // Ajustar el mapa para que se centre en todos los lotes
+      const bounds = new mapboxgl.LngLatBounds();
+      data.features.forEach(feature => {
+        if (feature.geometry && feature.geometry.coordinates && feature.geometry.coordinates[0]) {
+          feature.geometry.coordinates[0].forEach(coord => bounds.extend(coord));
+        }
+      });
+      
+      // Solo ajustar los límites si tenemos datos válidos
+      if (bounds.isEmpty()) {
+        bounds.extend([-96.51, 15.70]);
+        bounds.extend([-96.50, 15.71]);
+      }
+      
+      map.fitBounds(bounds, { padding: 50 });
+
+      // Capa para pintar polígonos con color azul en degradado
+      map.addLayer({
+        id: 'lotes-fill',
+        type: 'fill',
+        source: 'lotes',
+        paint: {
+          'fill-color': [
+            'interpolate',
+            ['linear'],
+            ['get', 'Area (m²)'],
+            300, '#64b5f6',
+            350, '#42a5f5',
+            400, '#2196f3'
+          ],
+          'fill-opacity': 0.7
+        }
+      });
+
+      // Capa de bordes con degradado
+      map.addLayer({
+        id: 'lotes-borders',
+        type: 'line',
+        source: 'lotes',
+        paint: {
+          'line-color': '#0d47a1',
+          'line-width': 2,
+          'line-opacity': 0.8
+        }
+      });
+
+      // Crear un elemento HTML personalizado para cada lote
+      filteredData.features.forEach(function(feature) {
+        const properties = feature.properties;
+        const coordinates = getCentroid(feature.geometry.coordinates[0]);
+        
+        // Crear el elemento HTML personalizado
+        const el = document.createElement('div');
+        el.className = 'lote-marker';
+        
+        // Determinar clase CSS según el estatus
+        let badgeClass = '';
+        switch(properties.estatus) {
+          case 'disponible':
+            badgeClass = 'badge-disponible';
+            break;
+          case 'vendido':
+            badgeClass = 'badge-vendido';
+            break;
+          case 'apartado':
+            badgeClass = 'badge-apartado';
+            break;
+        }
+        
+        el.innerHTML = `<div class="lote-badge ${badgeClass}">${properties.lote}</div>`;
+        
+        // Añadir marcador al mapa
+        new mapboxgl.Marker(el)
+          .setLngLat(coordinates)
+          .addTo(map);
+      });
+
+      // Popup al dar clic en un lote
+      map.on('click', 'lotes-fill', (e) => {
+        const props = e.features[0].properties;
+        
+        // Determinar clase CSS según el estatus
+        let statusClass = '';
+        switch(props.estatus) {
+          case 'disponible':
+            statusClass = 'disponible';
+            break;
+          case 'vendido':
+            statusClass = 'vendido';
+            break;
+          case 'apartado':
+            statusClass = 'apartado';
+            break;
+        }
+        
+        new mapboxgl.Popup()
+          .setLngLat(e.lngLat)
+          .setHTML(`
+            <div class="lote-info">
+              <div class="lote-numero">Lote ${props.lote}</div>
+              <div class="lote-area">${props["Area (m²)"]} m²</div>
+              <span class="estatus-badge ${statusClass}">${props.estatus.toUpperCase()}</span>
+              
+              <div class="lote-details">
+                <div class="lote-detail-row">
+                  <span class="lote-detail-label">Manzana:</span>
+                  <span class="lote-detail-value">${props.manzana}</span>
+                </div>
+                <div class="lote-detail-row">
+                  <span class="lote-detail-label">Norte:</span>
+                  <span class="lote-detail-value">${props["Norte:"]} m</span>
+                </div>
+                <div class="lote-detail-row">
+                  <span class="lote-detail-label">Sur:</span>
+                  <span class="lote-detail-value">${props["Sur:"]} m</span>
+                </div>
+                <div class="lote-detail-row">
+                  <span class="lote-detail-label">Oriente:</span>
+                  <span class="lote-detail-value">${props["Oriente:"]} m</span>
+                </div>
+                <div class="lote-detail-row">
+                  <span class="lote-detail-label">Poniente:</span>
+                  <span class="lote-detail-value">${props["Poniente:"]} m</span>
+                </div>
+              </div>
+            </div>
+          `)
+          .addTo(map);
+      });
+
+      // Cambiar cursor al pasar sobre un lote
+      map.on('mouseenter', 'lotes-fill', () => { 
+        map.getCanvas().style.cursor = 'pointer'; 
+      });
+      map.on('mouseleave', 'lotes-fill', () => { 
+        map.getCanvas().style.cursor = ''; 
+      });
+    });
+    
+    // Función para calcular el centroide de un polígono
+    function getCentroid(coords) {
+      let x = 0, y = 0;
+      for (let i = 0; i < coords.length - 1; i++) {
+        x += coords[i][0];
+        y += coords[i][1];
+      }
+      return [x / (coords.length - 1), y / (coords.length - 1)];
+    }
+  });
+</script>
+</body>
+</html>
