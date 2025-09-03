@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Lotes con estatus en Mapbox</title>
+  <title>Lotes con estatus en Mapbox - Vista de Relieve</title>
   <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
   <script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
   <link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet" />
@@ -296,7 +296,8 @@
 
   const map = new mapboxgl.Map({
     container: 'map',
-    style: 'mapbox://styles/mapbox/streets-v12',
+    // Cambiado a estilo de relieve/satélite con etiquetas
+    style: 'mapbox://styles/mapbox/satellite-streets-v12',
     center: [-96.5, 15.7],
     zoom: 14,
     pitch: 45,   // inclinación para 3D
@@ -325,16 +326,16 @@
       });
     });
 
-    // Añadir capa de terreno
+    // Añadir capa de terreno con mayor exageración para mejor visualización del relieve
     map.addSource('mapbox-dem', {
       type: 'raster-dem',
       url: 'mapbox://mapbox.mapbox-terrain-dem-v1',
       tileSize: 512,
       maxzoom: 14
     });
-    map.setTerrain({ source: 'mapbox-dem', exaggeration: 1.5 });
-
     
+    // Aumentar la exageración del terreno para que el relieve sea más visible
+    map.setTerrain({ source: 'mapbox-dem', exaggeration: 2.5 });
 
     // Intentar cargar el archivo GeoJSON, si falla usar datos de ejemplo
     function loadGeoJSON() {
@@ -372,13 +373,14 @@
           }
         });
 
+        // Hacer el polígono del fraccionamiento semi-transparente para ver el relieve debajo
         map.addLayer({
           id: 'fraccionamiento-fill',
           type: 'fill',
           source: 'fraccionamiento',
           paint: {
             'fill-color': '#e3f2fd',
-            'fill-opacity': 0.4
+            'fill-opacity': 0.2
           }
         });
 
@@ -415,21 +417,21 @@
       
       map.fitBounds(bounds, { padding: 50 });
 
-      // Capa para pintar polígonos con color azul en degradado
+      // Capa para pintar polígonos con colores semitransparentes para ver el relieve
       map.addLayer({
         id: 'lotes-fill',
         type: 'fill',
         source: 'lotes',
         paint: {
           'fill-color': [
-            'interpolate',
-            ['linear'],
-            ['get', 'Area (m²)'],
-            300, '#64b5f6',
-            350, '#42a5f5',
-            400, '#2196f3'
+            'match',
+            ['get', 'estatus'],
+            'disponible', 'rgba(76, 175, 80, 0.5)',     // Verde semitransparente
+            'vendido', 'rgba(244, 67, 54, 0.5)',        // Rojo semitransparente
+            'apartado', 'rgba(255, 152, 0, 0.5)',       // Naranja semitransparente
+            'rgba(33, 150, 243, 0.5)'                   // Azul semitransparente por defecto
           ],
-          'fill-opacity': 0.7
+          'fill-opacity': 0.6
         }
       });
 
@@ -439,9 +441,16 @@
         type: 'line',
         source: 'lotes',
         paint: {
-          'line-color': '#0d47a1',
+          'line-color': [
+            'match',
+            ['get', 'estatus'],
+            'disponible', '#2E7D32',     // Verde oscuro
+            'vendido', '#C62828',        // Rojo oscuro
+            'apartado', '#EF6C00',       // Naranja oscuro
+            '#0d47a1'                   // Azul oscuro por defecto
+          ],
           'line-width': 2,
-          'line-opacity': 0.8
+          'line-opacity': 0.9
         }
       });
 
@@ -548,6 +557,8 @@
       return [x / (coords.length - 1), y / (coords.length - 1)];
     }
   });
+
+  
 </script>
 </body>
 </html>
