@@ -42,7 +42,7 @@
       "type": "Feature",
       "properties": {
         "lote": "L1",
-        "estatus": "disponible",
+        "estatus": "vendido",
         "manzana": "1",
         "Area (m²)": 212,
         "Norte:": 12.9,
@@ -82,7 +82,7 @@
       "type": "Feature",
       "properties": {
         "lote": "L2",
-        "estatus": "disponible",
+        "estatus": "vendido",
         "manzana": "1",
         "Area (m²)": 211,
         "Norte:": 12,
@@ -162,7 +162,7 @@
       "type": "Feature",
       "properties": {
         "lote": "L4",
-        "estatus": "disponible",
+        "estatus": "vendido",
         "manzana": "1",
         "Area (m²)": 212,
         "Norte:": 12,
@@ -202,7 +202,7 @@
       "type": "Feature",
       "properties": {
         "lote": "L5",
-        "estatus": "apartado",
+        "estatus": "disponible",
         "manzana": "1",
         "Area (m²)": 212,
         "Norte:": 12,
@@ -402,7 +402,7 @@
       "type": "Feature",
       "properties": {
         "lote": "L10",
-        "estatus": "disponible",
+        "estatus": "vendido",
         "manzana": "2",
         "Area (m²)": 200,
         "Norte:": 10,
@@ -442,7 +442,7 @@
       "type": "Feature",
       "properties": {
         "lote": "L11",
-        "estatus": "disponible",
+        "estatus": "vendido",
         "manzana": "2",
         "Area (m²)": 200,
         "Norte:": 10,
@@ -482,7 +482,7 @@
       "type": "Feature",
       "properties": {
         "lote": "L12",
-        "estatus": "disponible",
+        "estatus": "vendido",
         "manzana": "2",
         "Area (m²)": 200,
         "Norte:": 10,
@@ -762,7 +762,7 @@
       "type": "Feature",
       "properties": {
         "lote": "L19",
-        "estatus": "vendido",
+        "estatus": "apartado",
         "manzana": "2",
         "Area (m²)": 296,
         "Norte:": 14.9,
@@ -802,7 +802,7 @@
       "type": "Feature",
       "properties": {
         "lote": "L20",
-        "estatus": "vendido",
+        "estatus": "disponible",
         "manzana": "2",
         "Area (m²)": 200,
         "Norte:": 10,
@@ -922,7 +922,7 @@
       "type": "Feature",
       "properties": {
         "lote": "L23",
-        "estatus": "disponible",
+        "estatus": "vendido",
         "manzana": "2",
         "Area (m²)": 200,
         "Norte:": 10,
@@ -962,7 +962,7 @@
       "type": "Feature",
       "properties": {
         "lote": "L24",
-        "estatus": "disponible",
+        "estatus": "vendido",
         "manzana": "2",
         "Area (m²)": 200,
         "Norte:": 10,
@@ -1002,7 +1002,7 @@
       "type": "Feature",
       "properties": {
         "lote": "L25",
-        "estatus": "apartado",
+        "estatus": "vendido",
         "manzana": "2",
         "Area (m²)": 200,
         "Norte:": 10,
@@ -1042,7 +1042,7 @@
       "type": "Feature",
       "properties": {
         "lote": "L26",
-        "estatus": "disponible",
+        "estatus": "vendido",
         "manzana": "2",
         "Area (m²)": 200,
         "Norte:": 10,
@@ -1082,7 +1082,7 @@
       "type": "Feature",
       "properties": {
         "lote": "L27",
-        "estatus": "disponible",
+        "estatus": "vendido",
         "manzana": "2",
         "Area (m²)": 215,
         "Norte:": 10,
@@ -1122,7 +1122,7 @@
       "type": "Feature",
       "properties": {
         "lote": "L28",
-        "estatus": "disponible",
+        "estatus": "vendido",
         "manzana": "3",
         "Area (m²)": 200,
         "Norte:": 10,
@@ -1162,7 +1162,7 @@
       "type": "Feature",
       "properties": {
         "lote": "L29",
-        "estatus": "disponible",
+        "estatus": "vendido",
         "manzana": "3",
         "Area (m²)": 200,
         "Norte:": 10,
@@ -1202,7 +1202,7 @@
       "type": "Feature",
       "properties": {
         "lote": "L30",
-        "estatus": "disponible",
+        "estatus": "vendido",
         "manzana": "3",
         "Area (m²)": 200,
         "Norte:": 10,
@@ -1282,7 +1282,7 @@
       "type": "Feature",
       "properties": {
         "lote": "L32",
-        "estatus": "disponible",
+        "estatus": "vendido",
         "manzana": "3",
         "Area (m²)": 200,
         "Norte:": 10,
@@ -1322,7 +1322,7 @@
       "type": "Feature",
       "properties": {
         "lote": "L33",
-        "estatus": "disponible",
+        "estatus": "vendido",
         "manzana": "3",
         "Area (m²)": 200,
         "Norte:": 10,
@@ -1402,7 +1402,7 @@
       "type": "Feature",
       "properties": {
         "lote": "L35",
-        "estatus": "disponible",
+        "estatus": "vendido",
         "manzana": "3",
         "Area (m²)": 200,
         "Norte:": 10,
@@ -1442,7 +1442,7 @@
       "type": "Feature",
       "properties": {
         "lote": "L36",
-        "estatus": "disponible",
+        "estatus": "apartado",
         "manzana": "3",
         "Area (m²)": 344,
         "Norte:": 17.1,
