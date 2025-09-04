@@ -122,7 +122,7 @@
       "type": "Feature",
       "properties": {
         "lote": "L3",
-        "estatus": "vendido",
+        "estatus": "disponible",
         "manzana": "1",
         "Area (m²)": 211,
         "Norte:": 12,
