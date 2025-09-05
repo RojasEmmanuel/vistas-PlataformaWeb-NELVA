@@ -322,7 +322,7 @@
       "type": "Feature",
       "properties": {
         "lote": "L8",
-        "estatus": "disponible",
+        "estatus": "apartado",
         "manzana": "1",
         "Area (m²)": 214,
         "Norte:": 12,
